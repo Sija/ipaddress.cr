@@ -1,4 +1,4 @@
-# ipaddress.cr
+# ipaddress.cr [![Build Status](https://travis-ci.org/Sija/ipaddress.cr.svg?branch=master)](https://travis-ci.org/Sija/ipaddress.cr)
 
 TODO: Write a description here
 
@@ -22,7 +22,10 @@ TODO: Write usage instructions here
 
 ## Development
 
-TODO: Write development instructions here
+Run specs with:
+```
+crystal spec
+```
 
 ## Contributing
 
@@ -31,6 +34,11 @@ TODO: Write development instructions here
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
 5. Create a new Pull Request
+
+## Acknowledgements
+
+- All of the contributors of [ipaddress](https://github.com/ipaddress-gem/ipaddress) gem,
+on which this library is heavily inspired
 
 ## Contributors
 
