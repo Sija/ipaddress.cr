@@ -20,9 +20,9 @@ module IPAddress
       @prefix = num.to_i
     end
 
-    # Returns a string with the prefix.
-    def to_s : String
-      prefix.to_s
+    # Appends a string representation of the prefix to the given `IO` object.
+    def to_s(io : IO)
+      io << prefix
     end
 
     # Returns the prefix.
