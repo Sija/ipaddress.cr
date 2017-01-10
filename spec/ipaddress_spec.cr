@@ -1,6 +1,25 @@
 require "./spec_helper"
 
 describe IPAddress do
+  describe ".ntoa" do
+    describe "with int" do
+      it "accepts valid addresses" do
+        IPAddress.ntoa(167837953).should eq("10.1.1.1")
+        IPAddress.ntoa(0).should eq("0.0.0.0")
+      end
+
+      it "raises on invalid addresses" do
+        expect_raises(ArgumentError) { IPAddress.ntoa -1 }
+      end
+    end
+    describe "with uint32" do
+      it "accepts valid addresses" do
+        IPAddress.ntoa(167837953_u32).should eq("10.1.1.1")
+        IPAddress.ntoa(0_u32).should eq("0.0.0.0")
+      end
+    end
+  end
+
   describe ".parse" do
     describe "with ipv4" do
       it "accepts valid addresses" do
