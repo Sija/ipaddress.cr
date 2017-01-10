@@ -9,7 +9,7 @@ module IPAddress
   #
   # `IPAddress::Prefix` shouldn't be accessed directly, unless
   # for particular need.
-  abstract class Prefix
+  abstract struct Prefix
     include Comparable(Prefix)
 
     # IP prefix value
@@ -57,7 +57,7 @@ module IPAddress
     end
   end
 
-  class Prefix32 < Prefix
+  struct Prefix32 < Prefix
     # 32 bit mask for IPv4
     IN4MASK = 0xffffffff.to_u32
 
@@ -168,7 +168,7 @@ module IPAddress
     end
   end
 
-  class Prefix128 < Prefix
+  struct Prefix128 < Prefix
     # Creates a new prefix object for 128 bits IPv6 addresses.
     #
     # ```
