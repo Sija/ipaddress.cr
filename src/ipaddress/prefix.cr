@@ -11,6 +11,7 @@ module IPAddress
   # for particular need.
   abstract struct Prefix
     include Comparable(Prefix)
+    include Comparable(Int)
 
     # IP prefix value
     getter prefix : Int32
@@ -33,6 +34,11 @@ module IPAddress
     # Compare the prefix.
     def <=>(other : Prefix)
       prefix <=> other.prefix
+    end
+
+    # Compare the prefix.
+    def <=>(other : Int)
+      prefix <=> other
     end
 
     # Sums two prefixes or a prefix to a number.
