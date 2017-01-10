@@ -20,6 +20,18 @@ describe IPAddress do
     end
   end
 
+  describe ".pton" do
+    it "accepts valid addresses" do
+      IPAddress.pton("10.1.1.1").should eq(167837953_u32)
+      IPAddress.pton("0.0.0.0").should eq(0_u32)
+    end
+
+    it "raises on invalid addresses" do
+      expect_raises(ArgumentError) { IPAddress.pton "-10.10.100.001" }
+      expect_raises(ArgumentError) { IPAddress.pton "a.b.c.d" }
+    end
+  end
+
   describe ".parse" do
     describe "with ipv4" do
       it "accepts valid addresses" do

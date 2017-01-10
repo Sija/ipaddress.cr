@@ -106,6 +106,19 @@ module IPAddress
     ntoa int.to_u32
   end
 
+  # Converts an IPv4 string to `UInt32`.
+  #
+  # ```
+  # IPAddress.pton "10.1.1.1" # => 167837953_u32
+  # IPAddress.pton "0.0.0.0"  # => 0_u32
+  # ```
+  def self.pton(addr : String) : UInt32
+    # Array formed with the IP octets
+    octets = addr.split('.').map &.to_u32
+    # 32 bits integer containing the address
+    (octets[0] << 24) + (octets[1] << 16) + (octets[2] << 8) + (octets[3])
+  end
+
   # Returns `true` if the given string is a valid IP address,
   # either IPv4 or IPv6.
   #
