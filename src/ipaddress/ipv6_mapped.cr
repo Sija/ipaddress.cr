@@ -68,7 +68,7 @@ module IPAddress
   # making it a mapped IPv6 compatible address.
   class IPv6::Mapped < IPv6
     # Internal `IPv4` address.
-    getter! ipv4 : IPv4
+    getter ipv4 : IPv4
 
     # Creates a new IPv6 IPv4-mapped address.
     #
@@ -91,7 +91,49 @@ module IPAddress
         string, netmask = addr, 128
       end
 
-      # ...
+      if string["."]?
+        # IPv4 in dotted decimal form
+        @ipv4 = IPv4.extract(string)
+      else
+        # IPv4 in hex form
+        groups = IPv6.groups(string)
+        @ipv4 = IPv4.parse_u32 (groups[-2] << 16) + groups[-1]
+      end
+
+      super("::ffff:#{@ipv4.to_ipv6}/#{netmask}")
+    end
+
+    # Similar to `IPv6#to_s(io)`, but appends the IPv4 address
+    # in dotted decimal format.
+    #
+    # ```
+    # ip6 = IPAddress.new "::ffff:172.16.10.1/128"
+    # ip6.to_s # => "::ffff:172.16.10.1"
+    # ```
+    def to_s(io : IO)
+      io << "::ffff:"
+      io << @ipv4.address
+    end
+
+    # Similar to `IPv6#to_string`, but prints out the IPv4 address
+    # in dotted decimal format.
+    #
+    # ```
+    # ip6 = IPAddress.new "::ffff:172.16.10.1/128"
+    # ip6.to_string # => "::ffff:172.16.10.1/128"
+    # ```
+    def to_string : String
+      "::ffff:#{@ipv4.address}/#{@prefix}"
+    end
+
+    # Returns `true` if the address is a mapped address.
+    #
+    # ```
+    # ip6 = IPAddress.new "::ffff:172.16.10.1/128"
+    # ip6.mapped? # => true
+    # ```
+    def mapped?
+      true
     end
   end
 end
