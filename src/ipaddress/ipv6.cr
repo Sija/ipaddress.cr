@@ -385,10 +385,10 @@ module IPAddress
     # addr1 = IPAddress.new "2001:db8::8:800:200c:1/128"
     # addr2 = IPAddress.new "2001:db8:1::8:800:200c:417a/76"
     #
-    # ip6.include? addr1 # => true
-    # ip6.include? addr2 # => false
+    # ip6.includes? addr1 # => true
+    # ip6.includes? addr2 # => false
     # ```
-    def include?(other : IPv6)
+    def includes?(other : IPv6)
       @prefix <= other.prefix && network_u128 == self.class.new(other.address + "/#{@prefix}").network_u128
     end
 
@@ -400,15 +400,15 @@ module IPAddress
     # addr1 = IPAddress.new "2001:db8::2/125"
     # addr2 = IPAddress.new "2001:db8::7/125"
     #
-    # ip6.include? addr1, addr2 # => true
+    # ip6.includes? addr1, addr2 # => true
     # ```
-    def include?(*others : IPv6)
-      include? others.to_a
+    def includes?(*others : IPv6)
+      includes? others.to_a
     end
 
     # ditto
-    def include?(others : Array(IPv6))
-      others.all? &->include?(IPv6)
+    def includes?(others : Array(IPv6))
+      others.all? &->includes?(IPv6)
     end
 
     # Returns `true` if the address is an unspecified address.

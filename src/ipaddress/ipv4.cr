@@ -680,10 +680,10 @@ module IPAddress
     # addr1 = IPAddress.new "192.168.10.102/24"
     # addr2 = IPAddress.new "172.16.0.48/16"
     #
-    # ip.include? addr1 # => true
-    # ip.include? addr2 # => false
+    # ip.includes? addr1 # => true
+    # ip.includes? addr2 # => false
     # ```
-    def include?(other : IPv4)
+    def includes?(other : IPv4)
       @prefix <= other.prefix && network_u32 == (other.to_u32 & @prefix.to_u32)
     end
 
@@ -695,15 +695,15 @@ module IPAddress
     # addr1 = IPAddress.new "192.168.10.102/24"
     # addr2 = IPAddress.new "192.168.10.103/24"
     #
-    # ip.include? addr1, addr2 # => true
+    # ip.includes? addr1, addr2 # => true
     # ```
-    def include?(*others : IPv4)
-      include? others.to_a
+    def includes?(*others : IPv4)
+      includes? others.to_a
     end
 
     # ditto
-    def include?(others : Array(IPv4))
-      others.all? &->include?(IPv4)
+    def includes?(others : Array(IPv4))
+      others.all? &->includes?(IPv4)
     end
 
     # Checks if an `IPv4` address objects belongs
@@ -719,7 +719,7 @@ module IPAddress
         self.class.new("172.16.0.0/12"),
         self.class.new("192.168.0.0/16"),
       }
-      private_ips.any? &.include?(self)
+      private_ips.any? &.includes?(self)
     end
 
     # Checks if an `IPv4` address objects belongs
@@ -731,7 +731,7 @@ module IPAddress
     # ```
     def multicast?
       multicast_ips = {self.class.new("224.0.0.0/4")}
-      multicast_ips.any? &.include?(self)
+      multicast_ips.any? &.includes?(self)
     end
 
     # Checks if an `IPv4` address objects belongs
@@ -743,7 +743,7 @@ module IPAddress
     # ```
     def loopback?
       loopback_ips = {self.class.new("127.0.0.0/8")}
-      loopback_ips.any? &.include?(self)
+      loopback_ips.any? &.includes?(self)
     end
 
     # Returns the IP address in `in-addr.arpa` format
@@ -916,10 +916,10 @@ module IPAddress
     end
 
     private def aggregate(ip1, ip2)
-      return [ip1] if ip1.include? ip2
+      return [ip1] if ip1.includes? ip2
 
       snet = ip1.supernet(ip1.prefix - 1)
-      if snet.include?(ip1, ip2) && ((ip1.size + ip2.size) == snet.size)
+      if snet.includes?(ip1, ip2) && ((ip1.size + ip2.size) == snet.size)
         [snet]
       else
         [ip1, ip2]
