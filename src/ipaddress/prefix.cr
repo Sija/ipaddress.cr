@@ -13,53 +13,51 @@ module IPAddress
     include Comparable(Prefix)
     include Comparable(Int)
 
-    # IP prefix value
+    # IP prefix value.
     getter prefix : Int32
 
     # Creates a new general prefix.
-    def initialize(num)
-      @prefix = num.to_i
+    def initialize(@prefix : Int32)
     end
 
     # Appends a string representation of the prefix to the given `IO` object.
     def to_s(io : IO)
-      io << prefix
+      io << @prefix
     end
 
     # Returns the prefix.
     def to_i : Int32
-      prefix
+      @prefix
     end
 
-    # Compare the prefix.
+    # Compares the prefixes.
     def <=>(other : Prefix)
-      prefix <=> other.prefix
+      @prefix <=> other.prefix
     end
 
-    # Compare the prefix.
+    # Compares the prefixes.
     def <=>(other : Int)
-      prefix <=> other
+      @prefix <=> other
     end
 
-    # Sums two prefixes or a prefix to a number.
-    def +(other : Prefix | Int)
-      case other
-      when Prefix
-        prefix + other.prefix
-      when Int
-        prefix + other
-      end
+    # Returns the sums of two prefixes.
+    def +(other : Prefix) : Int
+      @prefix + other.prefix
     end
 
-    # Returns the difference between two prefixes,
-    # or a prefix and a number.
-    def -(other : Prefix | Int)
-      case other
-      when Prefix
-        (prefix - other.prefix).abs
-      when Int
-        prefix - other
-      end
+    # Returns the sum of `#prefix` and an *other*.
+    def +(other : Int) : Int
+      @prefix + other
+    end
+
+    # Returns the difference between two prefixes.
+    def -(other : Prefix) : Int
+      (@prefix - other.prefix).abs
+    end
+
+    # Returns the difference between `#prefix` and an *other*.
+    def -(other : Int) : Int
+      @prefix - other
     end
   end
 
@@ -73,10 +71,10 @@ module IPAddress
     # ```
     # prefix = IPAddress::Prefix32.parse_netmask "255.255.255.0" # => 24
     # ```
-    def self.parse_netmask(netmask) : Prefix
+    def self.parse_netmask(netmask : String) : Prefix
       octets = netmask.split('.')
-      num = octets.join { |i| "%08b" % i.to_u8 }.count '1'
-      new(num)
+      prefix = octets.join { |i| "%08b" % i.to_u8 }.count '1'
+      new(prefix)
     end
 
     # Creates a new prefix object for 32 bits IPv4 addresses.
@@ -84,11 +82,11 @@ module IPAddress
     # ```
     # prefix = IPAddress::Prefix32.new 24 # => 24
     # ```
-    def initialize(num)
-      unless (0..32).includes? num
-        raise ArgumentError.new "Prefix must be in range 0..32, got: #{num}"
+    def initialize(prefix : Int32 = 32)
+      unless (0..32).includes? prefix
+        raise ArgumentError.new "Prefix must be in range 0..32, got: #{prefix}"
       end
-      super(num)
+      super(prefix)
     end
 
     # Returns the length of the host portion
@@ -99,7 +97,7 @@ module IPAddress
     # prefix.host_prefix # => 8
     # ```
     def host_prefix : Int32
-      32 - prefix
+      32 - @prefix
     end
 
     # Transforms the prefix into a string of bits
@@ -180,11 +178,11 @@ module IPAddress
     # ```
     # prefix = IPAddress::Prefix128.new 64 # => 64
     # ```
-    def initialize(num = 128)
-      unless (0..128).includes? num.to_i
-        raise ArgumentError.new "Prefix must be in range 0..128, got: #{num}"
+    def initialize(prefix : Int32 = 128)
+      unless (0..128).includes? prefix
+        raise ArgumentError.new "Prefix must be in range 0..128, got: #{prefix}"
       end
-      super(num.to_i)
+      super(prefix)
     end
 
     # Transforms the prefix into a string of bits
