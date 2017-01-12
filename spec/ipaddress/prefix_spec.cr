@@ -54,6 +54,18 @@ describe IPAddress::Prefix32 do
     (p2 - 4).should eq(20)
   end
 
+  it "#<=>" do
+    p1 = klass.new 8
+    p2 = klass.new 24
+    (p1 == 8).should be_true
+    (p1 == 24).should be_false
+    (p1 > p2).should be_false
+    (p1 > 24).should be_false
+    (p1 < p2).should be_true
+    (p1 < 24).should be_true
+    (p1 <=> p1).should eq(0)
+  end
+
   it "#prefix" do
     prefix_hash.values.each do |num|
       prefix = klass.new(num)
