@@ -767,20 +767,20 @@ module IPAddress
     # ip = IPAddress.new "172.16.100.51/32"
     #
     # # implies .map &.to_s
-    # ip.to "172.16.100.100"
+    # ip.upto "172.16.100.100"
     # # => ["172.16.100.51",
     # # => "172.16.100.52",
     # # => ...
     # # => "172.16.100.99",
     # # => "172.16.100.100"]
     # ```
-    def to(limit : IPv4) : Array(IPv4)
+    def upto(limit : IPv4) : Array(IPv4)
       Range.new(@u32, limit.to_u32).map &->IPv4.parse_u32(UInt32)
     end
 
     # ditto
-    def to(limit : String) : Array(IPv4)
-      to self.class.new limit
+    def upto(limit : String) : Array(IPv4)
+      upto self.class.new limit
     end
 
     # Tweaked to remove the #upto(32)

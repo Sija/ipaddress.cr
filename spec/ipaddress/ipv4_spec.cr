@@ -641,10 +641,10 @@ describe IPAddress::IPv4 do
     ip.supernet(22).to_string.should eq("172.16.8.0/22")
   end
 
-  it "#to" do
+  it "#upto" do
     in_range.each do |addr, (range_to, range_size)|
       ip = klass.new(addr)
-      ip.to(range_to).size.should eq(range_size)
+      ip.upto(range_to).size.should eq(range_size)
     end
   end
 end
