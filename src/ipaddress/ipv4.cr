@@ -166,11 +166,14 @@ module IPAddress
       return [ips.first.network] if ips.size == 1
 
       result = ips.dup.sort.map &.network
-      (0...result.size - 1).each do |i|
-        sum = result[i] + result[i + 1]
-        result[i..i + 1] = sum.first if sum.size == 1
+      begin
+        i = 0
+        while i < result.size - 1
+          sum = result[i] + result[i + 1]
+          result[i..i + 1] = sum.first if sum.size == 1
+          i += 1
+        end
       end
-
       result = result.flatten
       if result.size == ips.size
         # nothing more to summarize
