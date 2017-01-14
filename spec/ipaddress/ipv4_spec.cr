@@ -85,6 +85,8 @@ describe IPAddress::IPv4 do
       ip.prefix = addr.split('/').last.to_i
       ip.to_string.should eq(addr)
     end
+    ip = klass.parse_u32(-1)
+    ip.to_string.should eq("255.255.255.255/32")
   end
 
   it ".parse_classful" do
