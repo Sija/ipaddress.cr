@@ -429,6 +429,42 @@ describe IPAddress::IPv4 do
     ])
   end
 
+  it "#succ" do
+    ip = klass.new("192.168.100.0/24")
+    ip.succ.should be_a(IPAddress::IPv4)
+    ip.succ.to_string.should eq("192.168.100.1/24")
+
+    ip = klass.new("192.168.100.50/24")
+    ip.succ.should be_a(IPAddress::IPv4)
+    ip.succ.to_string.should eq("192.168.100.51/24")
+
+    ip = klass.new("0.0.0.0/32")
+    ip.succ.should be_a(IPAddress::IPv4)
+    ip.succ.to_string.should eq("0.0.0.1/32")
+
+    ip = klass.new("255.255.255.255/32")
+    ip.succ.should be_a(IPAddress::IPv4)
+    ip.succ.to_string.should eq("0.0.0.0/32")
+  end
+
+  it "#pred" do
+    ip = klass.new("192.168.100.0/24")
+    ip.pred.should be_a(IPAddress::IPv4)
+    ip.pred.to_string.should eq("192.168.99.255/24")
+
+    ip = klass.new("192.168.100.50/24")
+    ip.pred.should be_a(IPAddress::IPv4)
+    ip.pred.to_string.should eq("192.168.100.49/24")
+
+    ip = klass.new("0.0.0.0/32")
+    ip.pred.should be_a(IPAddress::IPv4)
+    ip.pred.to_string.should eq("255.255.255.255/32")
+
+    ip = klass.new("255.255.255.255/32")
+    ip.pred.should be_a(IPAddress::IPv4)
+    ip.pred.to_string.should eq("255.255.255.254/32")
+  end
+
   it "#hosts" do
     ip = klass.new("10.0.0.1/29")
     arr = ip.hosts.map &.to_s

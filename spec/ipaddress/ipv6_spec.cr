@@ -343,6 +343,42 @@ describe IPAddress::IPv6 do
     ])
   end
 
+  it "#succ" do
+    ip = klass.new("2001:db8:0:cd30::/64")
+    ip.succ.should be_a(IPAddress::IPv6)
+    ip.succ.to_string.should eq("2001:db8:0:cd30::1/64")
+
+    ip = klass.new("::")
+    ip.succ.should be_a(IPAddress::IPv6)
+    ip.succ.to_string.should eq("::1/128")
+
+    ip = klass.new("::1")
+    ip.succ.should be_a(IPAddress::IPv6)
+    ip.succ.to_string.should eq("::2/128")
+
+    ip = klass.new("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff/64")
+    ip.succ.should be_a(IPAddress::IPv6)
+    ip.succ.to_string.should eq("::/64")
+  end
+
+  it "#pred" do
+    ip = klass.new("2001:db8:0:cd30::/64")
+    ip.pred.should be_a(IPAddress::IPv6)
+    ip.pred.to_string.should eq("2001:db8:0:cd2f:ffff:ffff:ffff:ffff/64")
+
+    ip = klass.new("::")
+    ip.pred.should be_a(IPAddress::IPv6)
+    ip.pred.to_string.should eq("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff/128")
+
+    ip = klass.new("::1")
+    ip.pred.should be_a(IPAddress::IPv6)
+    ip.pred.to_string.should eq("::/128")
+
+    ip = klass.new("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff/64")
+    ip.pred.should be_a(IPAddress::IPv6)
+    ip.pred.to_string.should eq("ffff:ffff:ffff:ffff:ffff:ffff:ffff:fffe/64")
+  end
+
   it "#<=>" do
     ip1 = klass.new("2001:db8:1::1/64")
     ip2 = klass.new("2001:db8:2::1/64")

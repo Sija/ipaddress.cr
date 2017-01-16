@@ -522,6 +522,26 @@ module IPAddress
       end
     end
 
+    # Returns the successor to the IP address.
+    #
+    # ```
+    # ip6 = IPAddress.new "2001:db8::8:800:200c:417a/64"
+    # ip6.succ.to_string # => "2001:db8::8:800:200c:417b/64"
+    # ```
+    def succ : IPv6
+      self.class.parse_u128(to_u128.succ, @prefix)
+    end
+
+    # Returns the predecessor to the IP address.
+    #
+    # ```
+    # ip6 = IPAddress.new "2001:db8::8:800:200c:417a/64"
+    # ip6.pred.to_string # => "2001:db8::8:800:200c:4179/64"
+    # ```
+    def pred : IPv6
+      self.class.parse_u128(to_u128.pred, @prefix)
+    end
+
     # Returns the address portion of an IP in binary format,
     # as a string containing a sequence of `0` and `1`.
     #

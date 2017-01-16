@@ -624,6 +624,26 @@ module IPAddress
       end
     end
 
+    # Returns the successor to the IP address.
+    #
+    # ```
+    # ip = IPAddress.new "192.168.45.23/16"
+    # ip.succ.to_string # => "192.168.45.24/16"
+    # ```
+    def succ : IPv4
+      self.class.parse_u32(to_u32.succ, @prefix)
+    end
+
+    # Returns the predecessor to the IP address.
+    #
+    # ```
+    # ip = IPAddress.new "192.168.45.23/16"
+    # ip.pred.to_string # => "192.168.45.22/16"
+    # ```
+    def pred : IPv4
+      self.class.parse_u32(to_u32.pred, @prefix)
+    end
+
     # Returns the number of IP addresses included
     # in the network. It also counts the network
     # address and the broadcast address.
