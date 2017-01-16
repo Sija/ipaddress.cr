@@ -398,6 +398,8 @@ describe IPAddress::IPv6 do
     # ip1 should be equal to itself
     (ip1 == ip1).should be_true
     (ip1 != ip1).should be_false
+    # ip1 should be equal to its copy
+    (ip1 == ip1.dup).should be_true
     # ip4 should be greater than ip1
     (ip1 < ip4).should be_true
     (ip1 > ip4).should be_false

@@ -570,6 +570,8 @@ describe IPAddress::IPv4 do
     # ip1 should be equal to itself
     (ip1 == ip1).should be_true
     (ip1 != ip1).should be_false
+    # ip1 should be equal to its copy
+    (ip1 == ip1.dup).should be_true
     # ip1 should be equal to ip4
     (ip1 == ip4).should be_true
 
