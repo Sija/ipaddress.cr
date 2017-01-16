@@ -109,10 +109,10 @@ module IPAddress
   # Converts an IPv4 string to `UInt32`.
   #
   # ```
-  # IPAddress.pton "10.1.1.1" # => 167837953_u32
-  # IPAddress.pton "0.0.0.0"  # => 0_u32
+  # IPAddress.aton "10.1.1.1" # => 167837953_u32
+  # IPAddress.aton "0.0.0.0"  # => 0_u32
   # ```
-  def self.pton(addr : String) : UInt32
+  def self.aton(addr : String) : UInt32
     # Array formed with the IP octets
     octets = addr.split('.').map &.to_u32
     # 32 bits integer containing the address
