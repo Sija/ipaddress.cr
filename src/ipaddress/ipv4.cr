@@ -749,6 +749,18 @@ module IPAddress
       loopback_ips.any? &.includes?(self)
     end
 
+    # Checks if an `IPv4` address objects belongs
+    # to a link-local network [RFC3927](https://tools.ietf.org/html/rfc3927).
+    #
+    # ```
+    # ip = IPAddress.new "169.254.0.1"
+    # ip.link_local? # => true
+    # ```
+    def link_local?
+      link_local_ips = {self.class.new("169.254.0.0/16")}
+      link_local_ips.any? &.includes?(self)
+    end
+
     # Returns the IP address in `in-addr.arpa` format
     # for DNS lookups.
     #

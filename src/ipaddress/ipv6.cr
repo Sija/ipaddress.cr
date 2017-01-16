@@ -432,6 +432,30 @@ module IPAddress
       to_u128 >> 32 == 0xffff
     end
 
+    # Checks if an `IPv6` address objects belongs
+    # to a link-local network [RFC4291](https://tools.ietf.org/html/rfc4291).
+    #
+    # ```
+    # ip = IPAddress.new "fe80::1"
+    # ip.link_local? # => true
+    # ```
+    def link_local?
+      link_local_ips = {self.class.new("fe80::/64")}
+      link_local_ips.any? &.includes?(self)
+    end
+
+    # Checks if an `IPv6` address objects belongs
+    # to a unique-local network [RFC4193](https://tools.ietf.org/html/rfc4193).
+    #
+    # ```
+    # ip = IPAddress.new "fc00::1"
+    # ip.unique_local? # => true
+    # ```
+    def unique_local?
+      unique_local_ips = {self.class.new("fc00::/7")}
+      unique_local_ips.any? &.includes?(self)
+    end
+
     # Iterates over all the IP addresses for the given
     # network (or IP address).
     #

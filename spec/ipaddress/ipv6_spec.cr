@@ -225,6 +225,44 @@ describe IPAddress::IPv6 do
     ip.mapped?.should be_true
   end
 
+  it "#link_local?" do
+    expected = {
+      "fe80::"                    => true,
+      "fe80::1"                   => true,
+      "fe80::208:74ff:feda:625c"  => true,
+      "fe80::/64"                 => true,
+      "fe80::/65"                 => true,
+      "::"                        => false,
+      "::1"                       => false,
+      "ff80:03:02:01::"           => false,
+      "2001:db8::8:800:200c:417a" => false,
+      "fe80::/63"                 => false,
+    }
+    expected.each do |addr, result|
+      klass.new(addr).link_local?.should eq(result)
+    end
+  end
+
+  it "#unique_local?" do
+    expected = {
+      "fc00::/7"              => true,
+      "fc00::/8"              => true,
+      "fd00::/8"              => true,
+      "fd12:3456:789a:1::1"   => true,
+      "fd12:3456:789a:1::/64" => true,
+      "fc00::1"               => true,
+      "fc00::/6"              => false,
+      "::"                    => false,
+      "::1"                   => false,
+      "fe80::"                => false,
+      "fe80::1"               => false,
+      "fe80::/64"             => false,
+    }
+    expected.each do |addr, result|
+      klass.new(addr).unique_local?.should eq(result)
+    end
+  end
+
   it "#network" do
     networks.each do |addr, network|
       ip = klass.new addr

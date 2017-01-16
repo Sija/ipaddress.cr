@@ -495,6 +495,26 @@ describe IPAddress::IPv4 do
     end
   end
 
+  it "#link_local?" do
+    expected = {
+      "169.254.0.0"     => true,
+      "169.254.255.255" => true,
+      "169.254.12.34"   => true,
+      "169.254.0.0/16"  => true,
+      "169.254.0.0/17"  => true,
+      "127.0.0.1"       => false,
+      "127.0.1.1"       => false,
+      "192.168.0.100"   => false,
+      "169.255.0.0"     => false,
+      "169.254.0.0/15"  => false,
+      "0.0.0.0"         => false,
+      "255.255.255.255" => false,
+    }
+    expected.each do |addr, result|
+      klass.new(addr).link_local?.should eq(result)
+    end
+  end
+
   it "#<=>" do
     ip1 = klass.new("10.1.1.1/8")
     ip2 = klass.new("10.1.1.1/16")
