@@ -25,10 +25,13 @@ module IPAddress
       io << @prefix
     end
 
-    # Returns the prefix.
+    # Returns the `#prefix`.
     def to_i : Int32
       @prefix
     end
+
+    # Returns the `#prefix`.
+    def_hash @prefix
 
     # Compares the prefixes.
     def <=>(other : Prefix)
