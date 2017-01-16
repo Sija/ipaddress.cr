@@ -213,7 +213,7 @@ module IPAddress
         raise ArgumentError.new "Invalid IP: #{ip}"
       end
       first_octet_bits = "%08b" % ip.split('.').first.to_i
-      prefix = CLASSFUL.find { |k, v| k === first_octet_bits }.not_nil!.last
+      prefix = CLASSFUL.find(&.first.===(first_octet_bits)).not_nil!.last
       new "#{ip}/#{prefix}"
     end
 
