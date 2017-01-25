@@ -95,6 +95,34 @@ module IPAddress
       parse_u32 u32, prefix
     end
 
+    # Creates a new `IPv4` address object by parsing the
+    # address in a classful way.
+    #
+    # Classful addresses have a fixed netmask based on the
+    # class they belong to:
+    #
+    # * Class A, from `0.0.0.0` to `127.255.255.255`
+    # * Class B, from `128.0.0.0` to `191.255.255.255`
+    # * Class C, D and E, from `192.0.0.0` to `255.255.255.254`
+    #
+    # ```
+    # ip = IPAddress::IPv4.parse_classful "10.0.0.1"
+    #
+    # ip.netmask # => "255.0.0.0"
+    # ip.a?      # => true
+    # ```
+    #
+    # NOTE: Classes C, D and E will all have a default
+    # prefix of `/24` or `255.255.255.0`.
+    def self.parse_classful(ip : String) : IPv4
+      unless valid? ip
+        raise ArgumentError.new "Invalid IP: #{ip}"
+      end
+      first_octet_bits = "%08b" % ip.split('.').first.to_i
+      prefix = CLASSFUL.find(&.first.===(first_octet_bits)).not_nil!.last
+      new "#{ip}/#{prefix}"
+    end
+
     # Extract an `IPv4` address from a string and
     # returns a new object.
     #
@@ -204,34 +232,6 @@ module IPAddress
     # ditto
     def self.summarize(*ips : IPv4) : Array(IPv4)
       summarize ips.to_a
-    end
-
-    # Creates a new `IPv4` address object by parsing the
-    # address in a classful way.
-    #
-    # Classful addresses have a fixed netmask based on the
-    # class they belong to:
-    #
-    # * Class A, from `0.0.0.0` to `127.255.255.255`
-    # * Class B, from `128.0.0.0` to `191.255.255.255`
-    # * Class C, D and E, from `192.0.0.0` to `255.255.255.254`
-    #
-    # ```
-    # ip = IPAddress::IPv4.parse_classful "10.0.0.1"
-    #
-    # ip.netmask # => "255.0.0.0"
-    # ip.a?      # => true
-    # ```
-    #
-    # NOTE: Classes C, D and E will all have a default
-    # prefix of `/24` or `255.255.255.0`.
-    def self.parse_classful(ip : String) : IPv4
-      unless valid? ip
-        raise ArgumentError.new "Invalid IP: #{ip}"
-      end
-      first_octet_bits = "%08b" % ip.split('.').first.to_i
-      prefix = CLASSFUL.find(&.first.===(first_octet_bits)).not_nil!.last
-      new "#{ip}/#{prefix}"
     end
 
     # Returns the address portion of the `IPv4` object as a string.

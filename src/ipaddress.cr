@@ -1,6 +1,6 @@
 require "./ipaddress/*"
 
-# A Crystal library to manipulate IPv4 and IPv6 addresses
+# A Crystal library to manipulate IPv4 and IPv6 addresses.
 #
 # ```
 # require "ipaddress"
@@ -100,7 +100,7 @@ module IPAddress
   # IPAddress.ntoa -1        # raises ArgumentError
   # ```
   def self.ntoa(int : Int) : String
-    unless int <= 0xffffffff && int >= 0
+    unless 0xffffffff >= int >= 0
       raise ArgumentError.new "Not a long integer: #{int}"
     end
     ntoa int.to_u32
