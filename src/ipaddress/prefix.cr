@@ -1,23 +1,19 @@
 require "big"
 
 module IPAddress
-  # Parent class for `Prefix32` and `Prefix128`.
-  #
   # `IPAddress::Prefix` is the parent class for `IPAddress::Prefix32`
-  # and `IPAddress::Prefix128`, defining some modules in common for
+  # and `IPAddress::Prefix128`, defining some methods in common for
   # both the subclasses.
-  #
-  # `IPAddress::Prefix` shouldn't be accessed directly, unless
-  # for particular need.
   abstract struct Prefix
     include Comparable(Prefix)
     include Comparable(Int)
 
-    # IP prefix value.
+    # Returns IP prefix value.
     getter prefix : Int32
 
     # Creates a new general prefix.
-    def initialize(@prefix : Int32)
+    def initialize(prefix : Int)
+      @prefix = prefix.to_i
     end
 
     # Appends a string representation of the prefix to the given `IO` object.
@@ -28,6 +24,16 @@ module IPAddress
     # Returns the `#prefix`.
     def to_i : Int32
       @prefix
+    end
+
+    # Returns the successor to the `#prefix`.
+    def succ : Prefix
+      self.class.new @prefix.succ
+    end
+
+    # Returns the predecessor to the `#prefix`.
+    def pred : Prefix
+      self.class.new @prefix.pred
     end
 
     # Returns the `#prefix`.
