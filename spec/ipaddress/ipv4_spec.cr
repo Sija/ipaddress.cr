@@ -441,6 +441,16 @@ describe IPAddress::IPv4 do
     ])
   end
 
+  it "works with ranges" do
+    range = klass.new("192.168.100.254/24")..klass.new("192.168.101.0/24")
+    range.to_a.should be_a(Array(IPAddress::IPv4))
+    range.map(&.to_string).should eq([
+      "192.168.100.254/24",
+      "192.168.100.255/24",
+      "192.168.101.0/24",
+    ])
+  end
+
   it "#succ" do
     ip = klass.new("192.168.100.0/24")
     ip.succ.should be_a(IPAddress::IPv4)

@@ -66,6 +66,12 @@ describe IPAddress::Prefix32 do
     (p1 <=> p1).should eq(0)
   end
 
+  it "works with ranges" do
+    range = klass.new(0)...klass.new(3)
+    range.to_a.should be_a(Array(IPAddress::Prefix32))
+    range.map(&.to_i).should eq([0, 1, 2])
+  end
+
   it "#prefix" do
     prefix_hash.values.each do |num|
       prefix = klass.new(num)

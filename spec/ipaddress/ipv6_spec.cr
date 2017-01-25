@@ -355,6 +355,16 @@ describe IPAddress::IPv6 do
     ])
   end
 
+  it "works with ranges" do
+    range = klass.new("::")..klass.new("::2")
+    range.to_a.should be_a(Array(IPAddress::IPv6))
+    range.map(&.to_string).should eq([
+      "::/128",
+      "::1/128",
+      "::2/128",
+    ])
+  end
+
   it "#succ" do
     ip = klass.new("2001:db8:0:cd30::/64")
     ip.succ.should be_a(IPAddress::IPv6)
