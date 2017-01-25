@@ -771,6 +771,11 @@ module IPAddress
       others.all? &->includes?(IPv4)
     end
 
+    private def includes_self?(*ips : String)
+      ips = ips.map &->IPv4.new(String)
+      ips.any? &.includes?(self)
+    end
+
     # Checks if an `IPv4` address objects belongs
     # to a private network [RFC1918](https://tools.ietf.org/html/rfc1918).
     #
@@ -779,12 +784,7 @@ module IPAddress
     # ip.private? # => true
     # ```
     def private?
-      private_ips = {
-        self.class.new("10.0.0.0/8"),
-        self.class.new("172.16.0.0/12"),
-        self.class.new("192.168.0.0/16"),
-      }
-      private_ips.any? &.includes?(self)
+      includes_self? "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"
     end
 
     # Checks if an `IPv4` address objects belongs
@@ -795,8 +795,7 @@ module IPAddress
     # ip.multicast? # => true
     # ```
     def multicast?
-      multicast_ips = {self.class.new("224.0.0.0/4")}
-      multicast_ips.any? &.includes?(self)
+      includes_self? "224.0.0.0/4"
     end
 
     # Checks if an `IPv4` address objects belongs
@@ -807,8 +806,7 @@ module IPAddress
     # ip.loopback? # => true
     # ```
     def loopback?
-      loopback_ips = {self.class.new("127.0.0.0/8")}
-      loopback_ips.any? &.includes?(self)
+      includes_self? "127.0.0.0/8"
     end
 
     # Checks if an `IPv4` address objects belongs
@@ -819,8 +817,7 @@ module IPAddress
     # ip.link_local? # => true
     # ```
     def link_local?
-      link_local_ips = {self.class.new("169.254.0.0/16")}
-      link_local_ips.any? &.includes?(self)
+      includes_self? "169.254.0.0/16"
     end
 
     # Returns the IP address in `in-addr.arpa` format

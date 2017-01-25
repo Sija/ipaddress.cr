@@ -439,6 +439,11 @@ module IPAddress
       others.all? &->includes?(IPv6)
     end
 
+    private def includes_self?(*ips : String)
+      ips = ips.map &->IPv6.new(String)
+      ips.any? &.includes?(self)
+    end
+
     # Returns `true` if the address is an unspecified address.
     #
     # See `IPv6::Unspecified` for more information.
@@ -468,8 +473,7 @@ module IPAddress
     # ip.link_local? # => true
     # ```
     def link_local?
-      link_local_ips = {self.class.new("fe80::/64")}
-      link_local_ips.any? &.includes?(self)
+      includes_self? "fe80::/64"
     end
 
     # Checks if an `IPv6` address objects belongs
@@ -480,8 +484,7 @@ module IPAddress
     # ip.unique_local? # => true
     # ```
     def unique_local?
-      unique_local_ips = {self.class.new("fc00::/7")}
-      unique_local_ips.any? &.includes?(self)
+      includes_self? "fc00::/7"
     end
 
     # Iterates over all the IP addresses for the given
