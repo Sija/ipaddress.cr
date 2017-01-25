@@ -58,6 +58,13 @@ describe IPAddress::IPv6 do
     klass.parse_hex("20010db80000000000080800200c417a", 64).to_s.should eq(ip.to_s)
   end
 
+  it ".parse_data" do
+    ip = klass.parse_data Bytes[32, 1, 13, 184, 0, 0, 0, 0, 0, 8, 8, 0, 32, 12, 65, 122]
+    ip.should be_a(IPAddress::IPv6)
+    ip.address.should eq("2001:0db8:0000:0000:0008:0800:200c:417a")
+    ip.to_string.should eq("2001:db8::8:800:200c:417a/128")
+  end
+
   it ".expand" do
     expanded = "2001:0db8:0000:cd30:0000:0000:0000:0000"
     klass.expand("2001:db8:0:cd30::").should eq(expanded)
@@ -147,6 +154,11 @@ describe IPAddress::IPv6 do
            "0000000000000000000000001000000010000000000000100000" +
            "000011000100000101111010"
     ip.bits.should eq(bits)
+  end
+
+  it "#data" do
+    ip = klass.new "2001:db8::8:800:200c:417a/64"
+    ip.data.should eq(Bytes[32, 1, 13, 184, 0, 0, 0, 0, 0, 8, 8, 0, 32, 12, 65, 122])
   end
 
   it "#to_hex" do

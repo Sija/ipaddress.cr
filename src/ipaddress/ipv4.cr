@@ -78,6 +78,23 @@ module IPAddress
       new "#{address}/#{prefix}"
     end
 
+    # Creates a new `IPv4` object from binary data,
+    # like the one you get from a network stream.
+    #
+    # For example, on a network stream the IP `172.16.0.1`
+    # is represented with the binary `Bytes[172, 16, 0, 1]`.
+    #
+    # ```
+    # ip = IPAddress::IPv4.parse_data Bytes[172, 16, 0, 1]
+    # ip.prefix = 24
+    #
+    # ip.to_string # => "172.16.10.1/24"
+    # ```
+    def self.parse_data(data : Bytes, prefix = 32) : IPv4
+      u32 = IO::ByteFormat::NetworkEndian.decode UInt32, data
+      parse_u32 u32, prefix
+    end
+
     # Extract an `IPv4` address from a string and
     # returns a new object.
     #
@@ -428,6 +445,31 @@ module IPAddress
     # ```
     def bits : String
       @octets.map { |i| "%08b" % i }.join
+    end
+
+    # Returns the address portion of an `IPv4` object
+    # in a network byte order format (`IO::ByteFormat::NetworkEndian`).
+    #
+    # ```
+    # ip = IPAddress.new "172.16.10.1/24"
+    # ip.data # => Bytes[172, 16, 10, 1]
+    # ```
+    #
+    # It is usually used to include an IP address
+    # in a data packet to be sent over a socket
+    #
+    # ```
+    # ip = IPAddress.new "10.1.1.0/24"
+    # socket = Socket.new(params) # socket details here
+    #
+    # # Send binary data
+    # socket.send "Address: "
+    # socket.send ip.data
+    # ```
+    def data : Bytes
+      io = IO::Memory.new
+      io.write_bytes to_u32, IO::ByteFormat::NetworkEndian
+      io.to_slice
     end
 
     # Returns the broadcast address for the given IP.

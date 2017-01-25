@@ -89,6 +89,13 @@ describe IPAddress::IPv4 do
     ip.to_string.should eq("255.255.255.255/32")
   end
 
+  it ".parse_data" do
+    ip = klass.parse_data Bytes[172, 16, 10, 1]
+    ip.should be_a(IPAddress::IPv4)
+    ip.address.should eq("172.16.10.1")
+    ip.to_string.should eq("172.16.10.1/32")
+  end
+
   it ".parse_classful" do
     classful.each do |addr, prefix|
       ip = klass.parse_classful(addr)
@@ -310,6 +317,11 @@ describe IPAddress::IPv4 do
   it "#bits" do
     ip = klass.new("127.0.0.1")
     ip.bits.should eq("01111111000000000000000000000001")
+  end
+
+  it "#data" do
+    ip = klass.new("172.16.10.1/24")
+    ip.data.should eq(Bytes[172, 16, 10, 1])
   end
 
   it "#size" do

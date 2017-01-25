@@ -98,6 +98,34 @@ module IPAddress
       new str + "/#{prefix}"
     end
 
+    # Creates a new `IPv6` object from binary data,
+    # like the one you get from a network stream.
+    #
+    # For example, on a network stream the IP
+    #
+    #     "2001:db8::8:800:200c:417a"
+    #
+    # is represented with the binary data
+    #
+    #     Bytes[32, 1, 13, 184, 0, 0, 0, 0, 0, 8, 8, 0, 32, 12, 65, 122]
+    #
+    # With that data you can create a new `IPv6` object:
+    #
+    # ```
+    # ip6 = IPAddress::IPv6.parse_data Bytes[32, 1, 13, 184, 0, 0, 0, 0, 0, 8, 8, 0, 32, 12, 65, 122]
+    # ip6.prefix = 64
+    #
+    # ip6.to_s # => "2001:db8::8:800:200c:417a/64"
+    # ```
+    def self.parse_data(data : Bytes, prefix = 128) : IPv6
+      io = IO::Memory.new(data)
+      groups = [] of UInt16
+      8.times do
+        groups << io.read_bytes(UInt16, IO::ByteFormat::NetworkEndian)
+      end
+      new "#{IN6FORMAT % groups}/#{prefix}"
+    end
+
     # Creates a new `IPv6` object from a number expressed in
     # hexadecimal format.
     #
@@ -551,6 +579,33 @@ module IPAddress
     # ```
     def bits : String
       @groups.map { |i| "%016b" % i }.join
+    end
+
+    # Returns the address portion of an `IPv6` object
+    # in a network byte order format (`IO::ByteFormat::NetworkEndian`).
+    #
+    # ```
+    # ip6 = IPAddress.new "2001:db8::8:800:200c:417a/64"
+    # ip6.data # => Bytes[172, 16, 10, 1]
+    # ```
+    #
+    # It is usually used to include an IP address
+    # in a data packet to be sent over a socket
+    #
+    # ```
+    # ip6 = IPAddress.new "2001:db8::8:800:200c:417a/64"
+    # socket = Socket.new(params) # socket details here
+    #
+    # # Send binary data
+    # socket.send "Address: "
+    # socket.send ip6.data
+    # ```
+    def data : Bytes
+      io = IO::Memory.new
+      @groups.each do |group|
+        io.write_bytes group.to_u16, IO::ByteFormat::NetworkEndian
+      end
+      io.to_slice
     end
 
     # Literal version of the IPv6 address.
