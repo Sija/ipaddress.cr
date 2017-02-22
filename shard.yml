@@ -4,6 +4,6 @@ version: 0.1.0
 authors:
   - Sijawusz Pur Rahnama <sija@sija.pl>
 
-crystal: 0.20.3
+crystal: 0.21.0
 
 license: MIT

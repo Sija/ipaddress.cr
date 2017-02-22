@@ -54,7 +54,7 @@ module IPAddress
     # ip6.to_string # => "::/128"
     # ```
     def self.new
-      address = ("0000:" * 8).chop
+      address = ("0000:" * 8).rchop
       new "#{address}/128"
     end
   end
