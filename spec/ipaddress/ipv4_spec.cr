@@ -612,6 +612,32 @@ describe IPAddress::IPv4 do
     ])
   end
 
+  describe "#hash" do
+    it "returns the same hash when address and prefix match" do
+      ip1 = klass.new("10.0.0.0")
+      ip2 = klass.new("10.0.0.0")
+
+      ip1.hash.should eq ip2.hash
+
+      ip1 = klass.new("10.0.0.0/24")
+      ip2 = klass.new("10.0.0.0/24")
+
+      ip1.hash.should eq ip2.hash
+    end
+
+    it "returns a different hash when address and prefix don't match" do
+      ip1 = klass.new("10.0.0.0")
+      ip2 = klass.new("10.0.0.1")
+
+      ip1.hash.should_not eq ip2.hash
+
+      ip1 = klass.new("10.0.0.0/24")
+      ip2 = klass.new("10.0.0.0/32")
+
+      ip1.hash.should_not eq ip2.hash
+    end
+  end
+
   it "#-" do
     ip1 = klass.new("10.1.1.1/8")
     ip2 = klass.new("10.1.1.10/8")
