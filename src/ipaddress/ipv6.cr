@@ -553,6 +553,8 @@ module IPAddress
       end
     end
 
+    def_equals_and_hash @address, @prefix
+
     # Returns the successor to the IP address.
     #
     # ```

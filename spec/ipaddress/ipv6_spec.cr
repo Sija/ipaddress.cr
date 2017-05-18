@@ -432,4 +432,30 @@ describe IPAddress::IPv6 do
       "2001:db8:1::2/64", "2001:db8:2::1/64",
     ])
   end
+
+  describe "#hash" do
+    it "returns the same hash when address and prefix match" do
+      ip1 = klass.new("2001:db8:1::1")
+      ip2 = klass.new("2001:db8:1::1")
+
+      ip1.hash.should eq ip2.hash
+
+      ip1 = klass.new("2001:db8:1::1/64")
+      ip2 = klass.new("2001:db8:1::1/64")
+
+      ip1.hash.should eq ip2.hash
+    end
+
+    it "returns a different hash when address and prefix don't match" do
+      ip1 = klass.new("2001:db8:1::1")
+      ip2 = klass.new("2001:db8:1::2")
+
+      ip1.hash.should_not eq ip2.hash
+
+      ip1 = klass.new("2001:db8:1::1/64")
+      ip2 = klass.new("2001:db8:1::1/128")
+
+      ip1.hash.should_not eq ip2.hash
+    end
+  end
 end
