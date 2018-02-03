@@ -1,4 +1,5 @@
 # ipaddress.cr [![Build Status](https://travis-ci.org/Sija/ipaddress.cr.svg?branch=master)](https://travis-ci.org/Sija/ipaddress.cr)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSija%2Fipaddress.cr.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSija%2Fipaddress.cr?ref=badge_shield)
 
 IPAddress is a Crystal library designed to make the use of IPv4 and IPv6
 addresses simple, powerful and enjoyable. It provides a complete set of
@@ -1076,3 +1077,7 @@ Copyright © 2009-2015 Marco Ceresa, Mike Mackintosh.
 Copyright © 2017 Sijawusz Pur Rahnama.
 
 See [LICENSE](https://github.com/Sija/ipaddress.cr/blob/master/LICENSE) for details.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSija%2Fipaddress.cr.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FSija%2Fipaddress.cr?ref=badge_large)
