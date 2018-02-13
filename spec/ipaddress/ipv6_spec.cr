@@ -95,7 +95,7 @@ describe IPAddress::IPv6 do
           klass.new(addr)
         end
       end
-      expect_raises (ArgumentError) do
+      expect_raises(ArgumentError) do
         klass.new("::10.1.1.1")
       end
     end

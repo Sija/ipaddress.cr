@@ -1,9 +1,9 @@
 name: ipaddress
-version: 0.1.0
+version: 0.1.1
 
 authors:
   - Sijawusz Pur Rahnama <sija@sija.pl>
 
-crystal: 0.21.0
+crystal: 0.24.1
 
 license: MIT

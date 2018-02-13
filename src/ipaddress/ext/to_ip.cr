@@ -12,6 +12,7 @@ class String
   end
 
   # Returns `self` as an `IPAddress` object if possible, otherwise returns `nil`.
+  #
   # ```
   # "127.0.0.1".to_ip?.try(&.to_string)  # => "127.0.0.1/32"
   # "10.0.0.256".to_ip?.try(&.to_string) # => nil
