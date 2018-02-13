@@ -33,7 +33,7 @@ describe IPAddress::Prefix32 do
   end
 
   it "#initialize" do
-    expect_raises (ArgumentError) do
+    expect_raises(ArgumentError) do
       klass.new 33
     end
     klass.new(8).should be_a(IPAddress::Prefix32)
@@ -138,7 +138,7 @@ describe IPAddress::Prefix128 do
       klass.new(64).should be_a(IPAddress::Prefix128)
     end
     it "raises with invalid prefix" do
-      expect_raises (ArgumentError) do
+      expect_raises(ArgumentError) do
         klass.new 129
       end
     end

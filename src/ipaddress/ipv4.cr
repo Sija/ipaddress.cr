@@ -35,7 +35,7 @@ module IPAddress
     # ```
     def self.valid?(addr : String)
       if REGEXP_BONDED =~ addr
-        return ($~.size == 4) && (1..4).all? { |i| $~[i].to_i < 256 }
+        return ($~.group_size == 4) && (1..4).all? { |i| $~[i].to_i < 256 }
       end
       false
     end

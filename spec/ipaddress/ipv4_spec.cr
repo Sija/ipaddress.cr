@@ -14,6 +14,7 @@ describe IPAddress::IPv4 do
   invalid_ipv4 = {
     "10.0.0.256",
     "10.0.0.0.0",
+    "10.0.0.01.2",
     "10.0.0",
     "10.0",
   }
@@ -198,7 +199,7 @@ describe IPAddress::IPv4 do
           klass.new(addr)
         end
       end
-      expect_raises (ArgumentError) do
+      expect_raises(ArgumentError) do
         klass.new("10.0.0.0/asd")
       end
     end
