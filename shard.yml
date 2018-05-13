@@ -4,6 +4,10 @@ version: 0.1.1
 authors:
   - Sijawusz Pur Rahnama <sija@sija.pl>
 
+development_dependencies:
+  ameba:
+    github: veelenga/ameba
+
 crystal: 0.24.1
 
 license: MIT
