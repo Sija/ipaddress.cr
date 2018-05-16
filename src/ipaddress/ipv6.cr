@@ -235,7 +235,7 @@ module IPAddress
     # ip6 = IPAddress.new "2001:db8::8:800:200c:417a/64"
     # ```
     def initialize(addr : String)
-      if addr["/"]?
+      if addr['/']?
         ip, netmask = addr.split('/')
       else
         ip, netmask = addr, 128
@@ -637,12 +637,12 @@ module IPAddress
       str = @groups.join ':', &.to_s(16)
       replacements = {
         /\A0:0:0:0:0:0:0:0\Z/ => "::",
-        /\b0:0:0:0:0:0:0\b/   => ":",
-        /\b0:0:0:0:0:0\b/     => ":",
-        /\b0:0:0:0:0\b/       => ":",
-        /\b0:0:0:0\b/         => ":",
-        /\b0:0:0\b/           => ":",
-        /\b0:0\b/             => ":",
+        /\b0:0:0:0:0:0:0\b/   => ':',
+        /\b0:0:0:0:0:0\b/     => ':',
+        /\b0:0:0:0:0\b/       => ':',
+        /\b0:0:0:0\b/         => ':',
+        /\b0:0:0\b/           => ':',
+        /\b0:0\b/             => ':',
       }
       replacements.each do |pattern, replacement|
         if str[pattern]?

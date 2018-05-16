@@ -301,7 +301,7 @@ module IPAddress
     # ip = IPAddress::IPv4.new "10.0.0.1/255.0.0.0"
     # ```
     def initialize(addr : String)
-      if addr["/"]?
+      if addr['/']?
         ip, netmask = addr.split('/')
       else
         ip = addr

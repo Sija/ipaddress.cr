@@ -85,13 +85,13 @@ module IPAddress
     # ip6.to_string # => "::ffff:13.1.68.3"
     # ```
     def initialize(addr : String)
-      if addr["/"]?
+      if addr['/']?
         string, netmask = addr.split('/')
       else
         string, netmask = addr, 128
       end
 
-      if string["."]?
+      if string['.']?
         # IPv4 in dotted decimal form
         @ipv4 = IPv4.extract(string)
       else
