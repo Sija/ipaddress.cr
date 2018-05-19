@@ -19,12 +19,6 @@ describe IPAddress::IPv4 do
     "10.0",
   }
 
-  valid_ipv4_range = {
-    "10.0.0.1-254",
-    "10.0.1-254.0",
-    "10.1-254.0.0",
-  }
-
   netmask_values = {
     "0.0.0.0/0"        => "0.0.0.0",
     "10.0.0.0/8"       => "255.0.0.0",
@@ -257,7 +251,7 @@ describe IPAddress::IPv4 do
   end
 
   it "#to_s" do
-    valid_ipv4.each do |str, (addr, prefix)|
+    valid_ipv4.each do |str, (addr, _)|
       ip = klass.new(str)
       ip.to_s.should eq(addr)
     end

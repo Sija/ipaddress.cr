@@ -27,8 +27,6 @@ describe IPAddress::IPv6 do
     "0:0:0:0:0:0:0:0"                         => 0.to_big_i,
     "0:0:0::0:0:0"                            => 0.to_big_i,
     "::"                                      => 0.to_big_i,
-    "1080:0:0:0:8:800:200C:417A"              => "21932261930451111902915077091070067066".to_big_i,
-    "1080::8:800:200C:417A"                   => "21932261930451111902915077091070067066".to_big_i,
   }
 
   invalid_ipv6 = {
@@ -45,7 +43,7 @@ describe IPAddress::IPv6 do
   }
 
   it ".parse_u128" do
-    valid_ipv6.each do |addr, int|
+    valid_ipv6.each do |_, int|
       ip = klass.parse_u128(int)
       ip.to_s.should eq(klass.parse_u128(int).to_s)
     end
