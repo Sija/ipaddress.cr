@@ -330,7 +330,7 @@ module IPAddress
     # Updates the 16-bits value specified at *index*.
     #
     # See also: `#groups`
-    def []=(index : Int32, value : Int32) : Void
+    def []=(index : Int32, value : Int32) : Nil
       @groups[index] = value
       initialize "#{IN6FORMAT % @groups}/#{@prefix}"
     end
@@ -511,7 +511,7 @@ module IPAddress
     #
     # NOTE: If the host portion is very large, this method
     # can be very slow and possibly hang your system!
-    def each : Void
+    def each : Nil
       (network_u128..broadcast_u128).each do |i|
         yield self.class.parse_u128 i, @prefix
       end

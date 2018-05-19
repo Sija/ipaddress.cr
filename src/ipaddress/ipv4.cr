@@ -361,7 +361,7 @@ module IPAddress
     # ```
     #
     # See also: `#octets`
-    def []=(index : Int32, value : Int32) : Void
+    def []=(index : Int32, value : Int32) : Nil
       @octets[index] = value
       initialize "#{@octets.join('.')}/#{@prefix}"
     end
@@ -407,7 +407,7 @@ module IPAddress
     # ip.netmask = "255.255.252.0"
     # ip.to_string # => 172.16.100.4/22
     # ```
-    def netmask=(addr : String) : Void
+    def netmask=(addr : String) : Nil
       @prefix = Prefix32.parse_netmask addr
     end
 
@@ -597,7 +597,7 @@ module IPAddress
     # # => "10.0.0.5"
     # # => "10.0.0.6"
     # ```
-    def each_host : Void
+    def each_host : Nil
       (network_u32 + 1..broadcast_u32 - 1).each do |i|
         yield self.class.parse_u32 i, @prefix
       end
@@ -624,7 +624,7 @@ module IPAddress
     # # => "10.0.0.6"
     # # => "10.0.0.7"
     # ```
-    def each : Void
+    def each : Nil
       (network_u32..broadcast_u32).each do |i|
         yield self.class.parse_u32 i, @prefix
       end
