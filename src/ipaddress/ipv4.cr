@@ -606,7 +606,7 @@ module IPAddress
     # Iterates over all the IP addresses for the given
     # network (or IP address).
     #
-    # The object yielded is a new IPv4 object created
+    # The object yielded is a new `IPv4` object created
     # from the iteration.
     #
     # ```
@@ -1049,7 +1049,7 @@ module IPAddress
     # ip.a? # => true
     # ```
     def a?
-      CLASSFUL.key(8) === bits
+      CLASSFUL.key_for(8) === bits
     end
 
     # Checks whether the ip address belongs to a
@@ -1061,7 +1061,7 @@ module IPAddress
     # ip.b? # => true
     # ```
     def b?
-      CLASSFUL.key(16) === bits
+      CLASSFUL.key_for(16) === bits
     end
 
     # Checks whether the ip address belongs to a
@@ -1073,7 +1073,7 @@ module IPAddress
     # ip.c? # => true
     # ```
     def c?
-      CLASSFUL.key(24) === bits
+      CLASSFUL.key_for(24) === bits
     end
 
     # Returns the ip address in a format compatible
