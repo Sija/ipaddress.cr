@@ -235,7 +235,7 @@ module IPAddress
     # ip6 = IPAddress.new "2001:db8::8:800:200c:417a/64"
     # ```
     def initialize(addr : String)
-      if addr["/"]?
+      if addr['/']?
         ip, netmask = addr.split('/')
       else
         ip, netmask = addr, 128
@@ -330,7 +330,7 @@ module IPAddress
     # Updates the 16-bits value specified at *index*.
     #
     # See also: `#groups`
-    def []=(index : Int32, value : Int32) : Void
+    def []=(index : Int32, value : Int32) : Nil
       @groups[index] = value
       initialize "#{IN6FORMAT % @groups}/#{@prefix}"
     end
@@ -511,7 +511,7 @@ module IPAddress
     #
     # NOTE: If the host portion is very large, this method
     # can be very slow and possibly hang your system!
-    def each : Void
+    def each : Nil
       (network_u128..broadcast_u128).each do |i|
         yield self.class.parse_u128 i, @prefix
       end
@@ -637,12 +637,12 @@ module IPAddress
       str = @groups.join ':', &.to_s(16)
       replacements = {
         /\A0:0:0:0:0:0:0:0\Z/ => "::",
-        /\b0:0:0:0:0:0:0\b/   => ":",
-        /\b0:0:0:0:0:0\b/     => ":",
-        /\b0:0:0:0:0\b/       => ":",
-        /\b0:0:0:0\b/         => ":",
-        /\b0:0:0\b/           => ":",
-        /\b0:0\b/             => ":",
+        /\b0:0:0:0:0:0:0\b/   => ':',
+        /\b0:0:0:0:0:0\b/     => ':',
+        /\b0:0:0:0:0\b/       => ':',
+        /\b0:0:0:0\b/         => ':',
+        /\b0:0:0\b/           => ':',
+        /\b0:0\b/             => ':',
       }
       replacements.each do |pattern, replacement|
         if str[pattern]?

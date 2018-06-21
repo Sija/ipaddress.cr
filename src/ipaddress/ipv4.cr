@@ -301,7 +301,7 @@ module IPAddress
     # ip = IPAddress::IPv4.new "10.0.0.1/255.0.0.0"
     # ```
     def initialize(addr : String)
-      if addr["/"]?
+      if addr['/']?
         ip, netmask = addr.split('/')
       else
         ip = addr
@@ -361,7 +361,7 @@ module IPAddress
     # ```
     #
     # See also: `#octets`
-    def []=(index : Int32, value : Int32) : Void
+    def []=(index : Int32, value : Int32) : Nil
       @octets[index] = value
       initialize "#{@octets.join('.')}/#{@prefix}"
     end
@@ -407,7 +407,7 @@ module IPAddress
     # ip.netmask = "255.255.252.0"
     # ip.to_string # => 172.16.100.4/22
     # ```
-    def netmask=(addr : String) : Void
+    def netmask=(addr : String) : Nil
       @prefix = Prefix32.parse_netmask addr
     end
 
@@ -597,7 +597,7 @@ module IPAddress
     # # => "10.0.0.5"
     # # => "10.0.0.6"
     # ```
-    def each_host : Void
+    def each_host : Nil
       (network_u32 + 1..broadcast_u32 - 1).each do |i|
         yield self.class.parse_u32 i, @prefix
       end
@@ -606,7 +606,7 @@ module IPAddress
     # Iterates over all the IP addresses for the given
     # network (or IP address).
     #
-    # The object yielded is a new IPv4 object created
+    # The object yielded is a new `IPv4` object created
     # from the iteration.
     #
     # ```
@@ -624,7 +624,7 @@ module IPAddress
     # # => "10.0.0.6"
     # # => "10.0.0.7"
     # ```
-    def each : Void
+    def each : Nil
       (network_u32..broadcast_u32).each do |i|
         yield self.class.parse_u32 i, @prefix
       end
@@ -1049,7 +1049,7 @@ module IPAddress
     # ip.a? # => true
     # ```
     def a?
-      CLASSFUL.key(8) === bits
+      CLASSFUL.key_for(8) === bits
     end
 
     # Checks whether the ip address belongs to a
@@ -1061,7 +1061,7 @@ module IPAddress
     # ip.b? # => true
     # ```
     def b?
-      CLASSFUL.key(16) === bits
+      CLASSFUL.key_for(16) === bits
     end
 
     # Checks whether the ip address belongs to a
@@ -1073,7 +1073,7 @@ module IPAddress
     # ip.c? # => true
     # ```
     def c?
-      CLASSFUL.key(24) === bits
+      CLASSFUL.key_for(24) === bits
     end
 
     # Returns the ip address in a format compatible
