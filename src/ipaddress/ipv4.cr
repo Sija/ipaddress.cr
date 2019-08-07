@@ -955,6 +955,7 @@ module IPAddress
         raise ArgumentError.new "New prefix must be smaller than existing prefix"
       end
       return self.class.new("0.0.0.0/0") if new_prefix < 1
+      # ameba:disable Style/RedundantReturn
       return self.class.new("#{@address}/#{new_prefix}").network
     end
 
