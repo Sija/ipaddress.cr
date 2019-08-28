@@ -452,7 +452,7 @@ easy:
 ```crystal
 network = IPAddress.new "172.16.10.0/24"
 
-subnets = network.subnet26)
+subnets = network.subnet(26)
 
 subnets.map(&.to_string)
   # => ["172.16.10.0/26",
