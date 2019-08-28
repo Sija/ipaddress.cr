@@ -29,7 +29,7 @@ describe IPAddress::IPv6::Mapped do
     ip.to_s.should eq("::ffff:172.16.10.1")
     ip.to_string.should eq("::ffff:172.16.10.1/128")
     ip.to_string_uncompressed.should eq("0000:0000:0000:0000:0000:ffff:ac10:0a01/128")
-    ip.to_u128.should eq("281473568475649".to_big_i)
+    ip.to_big_i.should eq("281473568475649".to_big_i)
   end
 
   it "#ipv6?" do
@@ -40,9 +40,9 @@ describe IPAddress::IPv6::Mapped do
     ip.mapped?.should be_true
   end
 
-  it "#to_u128" do
+  it "#to_big_i" do
     valid_mapped.merge(valid_mapped_ipv6).each do |addr, u128|
-      klass.new(addr).to_u128.should eq(u128)
+      klass.new(addr).to_big_i.should eq(u128)
     end
   end
 

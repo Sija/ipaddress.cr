@@ -769,7 +769,7 @@ A few other methods are available to transform an IPv6 address into
 decimal representation, with `IPv6#to_`:
 
 ```crystal
-ip6.to_u128
+ip6.to_big_i
   # => 42540766411282592856906245548098208122
 ```
 
@@ -834,8 +834,7 @@ actually created internally).
 You can create a new IPv6 address from different formats than just a
 string representing the colon-hex groups.
 
-A new IPv6 address can also be created from an unsigned 128 bits
-integer:
+A new IPv6 address can also be created from an `BigInt` integer:
 
 ```crystal
 u128 = "42540766411282592856906245548098208122".to_big_i
@@ -1072,7 +1071,7 @@ feedback and bug reports.
 
 ## Copyright
 
-Copyright © 2009-2015 Marco Ceresa, Mike Mackintosh.  
+Copyright © 2009-2015 Marco Ceresa, Mike Mackintosh.
 Copyright © 2017 Sijawusz Pur Rahnama.
 
 See [LICENSE](https://github.com/Sija/ipaddress.cr/blob/master/LICENSE) for details.
