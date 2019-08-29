@@ -14,7 +14,7 @@ describe IPAddress::IPv6::Unspecified do
     ip.to_s.should eq("::")
     ip.to_string.should eq("::/128")
     ip.to_string_uncompressed.should eq("0000:0000:0000:0000:0000:0000:0000:0000/128")
-    ip.to_u128.should eq(0)
+    ip.to_big_i.should eq(0)
   end
 
   it "#ipv6?" do

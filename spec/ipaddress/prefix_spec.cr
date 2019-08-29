@@ -154,7 +154,7 @@ describe IPAddress::Prefix128 do
   describe "#to_u32" do
     it "returns correct representation" do
       u128_hash.each do |num, u128|
-        klass.new(num).to_u128.should eq(u128)
+        klass.new(num).to_big_i.should eq(u128)
       end
     end
   end

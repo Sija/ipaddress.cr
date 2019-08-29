@@ -210,9 +210,9 @@ module IPAddress
     #
     # ```
     # prefix = IPAddress::Prefix128.new 64
-    # prefix.to_u128 # => 340282366920938463444927863358058659840
+    # prefix.to_big_i # => 340282366920938463444927863358058659840
     # ```
-    def to_u128 : BigInt
+    def to_big_i : BigInt
       bits.to_big_i(2)
     end
 

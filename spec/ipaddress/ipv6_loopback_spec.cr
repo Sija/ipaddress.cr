@@ -14,7 +14,7 @@ describe IPAddress::IPv6::Loopback do
     ip.to_s.should eq("::1")
     ip.to_string.should eq("::1/128")
     ip.to_string_uncompressed.should eq("0000:0000:0000:0000:0000:0000:0000:0001/128")
-    ip.to_u128.should eq(1)
+    ip.to_big_i.should eq(1)
   end
 
   it "#ipv6?" do

@@ -179,9 +179,9 @@ describe IPAddress::IPv6 do
     ip.to_string_uncompressed.should eq("2001:0db8:0000:0000:0008:0800:200c:417a/64")
   end
 
-  it "#to_u128" do
+  it "#to_big_i" do
     valid_ipv6.each do |ip, int|
-      klass.new(ip).to_u128.should eq(int)
+      klass.new(ip).to_big_i.should eq(int)
     end
   end
 

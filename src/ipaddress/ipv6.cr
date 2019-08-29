@@ -292,9 +292,9 @@ module IPAddress
     #
     # ```
     # ip6 = IPAddress.new "2001:db8::8:800:200c:417a/64"
-    # ip6.to_u128 # => 42540766411282592856906245548098208122
+    # ip6.to_big_i # => 42540766411282592856906245548098208122
     # ```
-    def to_u128 : BigInt
+    def to_big_i : BigInt
       to_hex.to_big_i(16)
     end
 
@@ -308,7 +308,7 @@ module IPAddress
     # ip6.network? # => true
     # ```
     def network?
-      to_u128 | @prefix.to_u128 == @prefix.to_u128
+      to_big_i | @prefix.to_big_i == @prefix.to_big_i
     end
 
     # Returns the 16-bits value specified by *index*.
@@ -376,7 +376,7 @@ module IPAddress
     # ip6.network_u128 # => 42540766411282592856903984951653826560
     # ```
     def network_u128 : BigInt
-      to_u128 & @prefix.to_u128
+      to_big_i & @prefix.to_big_i
     end
 
     # Returns the broadcast address in unsigned 128 bits format.
@@ -462,7 +462,7 @@ module IPAddress
     #
     # See `IPv6::Mapped` for more information.
     def mapped?
-      to_u128 >> 32 == 0xffff
+      to_big_i >> 32 == 0xffff
     end
 
     # Checks if an `IPv6` address objects belongs
@@ -546,10 +546,10 @@ module IPAddress
     # # => ["2001:db8:1::1/64", "2001:db8:1::1/65", "2001:db8:2::1/64"]
     # ```
     def <=>(other : IPv6)
-      if to_u128 == other.to_u128
+      if to_big_i == other.to_big_i
         @prefix <=> other.prefix
       else
-        to_u128 <=> other.to_u128
+        to_big_i <=> other.to_big_i
       end
     end
 
@@ -562,7 +562,7 @@ module IPAddress
     # ip6.succ.to_string # => "2001:db8::8:800:200c:417b/64"
     # ```
     def succ : IPv6
-      self.class.parse_u128(to_u128.succ, @prefix)
+      self.class.parse_u128(to_big_i.succ, @prefix)
     end
 
     # Returns the predecessor to the IP address.
@@ -572,7 +572,7 @@ module IPAddress
     # ip6.pred.to_string # => "2001:db8::8:800:200c:4179/64"
     # ```
     def pred : IPv6
-      self.class.parse_u128(to_u128.pred, @prefix)
+      self.class.parse_u128(to_big_i.pred, @prefix)
     end
 
     # Returns the address portion of an IP in binary format,
