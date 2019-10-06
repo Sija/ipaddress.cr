@@ -71,7 +71,7 @@ module IPAddress
     def self.parse_u32(u32, prefix = 32) : IPv4
       octets = [] of Int32
       4.times do
-        octets.unshift u32.to_i & 0xff
+        octets.unshift u32.to_i! & 0xff
         u32 >>= 8
       end
       address = octets.join '.'
@@ -300,38 +300,41 @@ module IPAddress
     # ip = IPAddress::IPv4.new "10.0.0.1/8"
     # ip = IPAddress::IPv4.new "10.0.0.1/255.0.0.0"
     # ```
-    def initialize(addr : String)
-      if addr['/']?
+    def initialize(addr : String, netmask = nil)
+      if !netmask && addr['/']?
         ip, netmask = addr.split('/')
       else
         ip = addr
       end
 
-      unless self.class.valid? ip
+      unless self.class.valid?(ip)
         raise ArgumentError.new "Invalid IP: #{ip}"
       end
 
       @address = ip
       if netmask
-        if netmask =~ /^\d{1,2}$/
+        case
+        when netmask.is_a?(Prefix32)
+          @prefix = netmask
+        when netmask.is_a?(Int) || netmask.to_i?
           # netmask in CIDR format
-          @prefix = Prefix32.new netmask.to_i
-        elsif self.class.valid_netmask? netmask
+          @prefix = Prefix32.new(netmask.to_i)
+        when self.class.valid_netmask?(netmask)
           # netmask in IP format
-          @prefix = Prefix32.parse_netmask netmask
+          @prefix = Prefix32.parse_netmask(netmask)
         else
           # invalid netmask
           raise ArgumentError.new "Invalid netmask: #{netmask}"
         end
       else
         # netmask is `nil`, reverting to default classful mask
-        @prefix = Prefix32.new 32
+        @prefix = Prefix32.new(32)
       end
 
       # Array formed with the IP octets
       @octets = @address.split('.').map &.to_i
       # 32 bits interger containing the address
-      @u32 = IPAddress.aton address
+      @u32 = IPAddress.aton(address)
     end
 
     # Returns the octet specified by *index*.
@@ -363,7 +366,7 @@ module IPAddress
     # See also: `#octets`
     def []=(index : Int32, value : Int32) : Nil
       @octets[index] = value
-      initialize "#{@octets.join('.')}/#{@prefix}"
+      initialize(@octets.join('.'), @prefix)
     end
 
     # Appends a string with the address portion of the IPv4 object
@@ -479,12 +482,12 @@ module IPAddress
     # ip.broadcast.to_s # => "172.16.10.255"
     # ```
     def broadcast : IPv4
-      case
-      when @prefix <= 30
+      case @prefix
+      when .<= 30
         self.class.parse_u32 broadcast_u32, @prefix
-      when @prefix == 31
+      when .== 31
         self.class.parse_u32 -1, @prefix
-      when @prefix == 32
+      when .== 32
         self
       else
         # need it here to make compiler happy
@@ -502,7 +505,7 @@ module IPAddress
     # ip.network? # => true
     # ```
     def network?
-      (@prefix < 32) && (@u32 | @prefix.to_u32 == @prefix.to_u32)
+      (@prefix < 32) && (to_u32 | @prefix.to_u32 == @prefix.to_u32)
     end
 
     # Returns a new `IPv4` object with the network number
@@ -535,12 +538,12 @@ module IPAddress
     # ip.first.to_s # => "192.168.100.1"
     # ```
     def first : IPv4
-      case
-      when @prefix <= 30
+      case @prefix
+      when .<= 30
         self.class.parse_u32 network_u32 + 1, @prefix
-      when @prefix == 31
+      when .== 31
         self.class.parse_u32 network_u32, @prefix
-      when @prefix == 32
+      when .== 32
         self
       else
         # need it here to make compiler happy
@@ -568,12 +571,12 @@ module IPAddress
     # ip.last.to_s # => "192.168.100.254"
     # ```
     def last : IPv4
-      case
-      when @prefix <= 30
+      case @prefix
+      when .<= 30
         self.class.parse_u32 broadcast_u32 - 1, @prefix
-      when @prefix == 31
+      when .== 31
         self.class.parse_u32 broadcast_u32, @prefix
-      when @prefix == 32
+      when .== 32
         self
       else
         # need it here to make compiler happy
@@ -676,6 +679,8 @@ module IPAddress
     # ```
     def succ : IPv4
       self.class.parse_u32(to_u32.succ, @prefix)
+    rescue OverflowError
+      self.class.new("0.0.0.0", @prefix)
     end
 
     # Returns the predecessor to the IP address.
@@ -686,6 +691,8 @@ module IPAddress
     # ```
     def pred : IPv4
       self.class.parse_u32(to_u32.pred, @prefix)
+    rescue OverflowError
+      self.class.new("255.255.255.255", @prefix)
     end
 
     # Returns the number of IP addresses included
@@ -724,7 +731,7 @@ module IPAddress
     # ip.network_u32 # => 167772160
     # ```
     def network_u32 : UInt32
-      @u32 & @prefix.to_u32
+      to_u32 & @prefix.to_u32
     end
 
     # Returns the broadcast address in unsigned 32 bits format.
@@ -848,7 +855,7 @@ module IPAddress
     # # => "172.16.100.100"]
     # ```
     def upto(limit : IPv4) : Array(IPv4)
-      Range.new(@u32, limit.to_u32).map &->IPv4.parse_u32(UInt32)
+      Range.new(to_u32, limit.to_u32).map &->IPv4.parse_u32(UInt32)
     end
 
     # ditto

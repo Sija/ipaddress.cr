@@ -1,5 +1,5 @@
 name: ipaddress
-version: 0.2.0
+version: 0.2.1
 
 authors:
   - Sijawusz Pur Rahnama <sija@sija.pl>
@@ -9,6 +9,6 @@ development_dependencies:
     github: crystal-ameba/ameba
     version: ~> 0.10.0
 
-crystal: 0.25.0
+crystal: 0.31.0
 
 license: MIT
