@@ -479,12 +479,12 @@ module IPAddress
     # ip.broadcast.to_s # => "172.16.10.255"
     # ```
     def broadcast : IPv4
-      case
-      when @prefix <= 30
+      case @prefix
+      when .<= 30
         self.class.parse_u32 broadcast_u32, @prefix
-      when @prefix == 31
+      when .== 31
         self.class.parse_u32 -1, @prefix
-      when @prefix == 32
+      when .== 32
         self
       else
         # need it here to make compiler happy
@@ -535,12 +535,12 @@ module IPAddress
     # ip.first.to_s # => "192.168.100.1"
     # ```
     def first : IPv4
-      case
-      when @prefix <= 30
+      case @prefix
+      when .<= 30
         self.class.parse_u32 network_u32 + 1, @prefix
-      when @prefix == 31
+      when .== 31
         self.class.parse_u32 network_u32, @prefix
-      when @prefix == 32
+      when .== 32
         self
       else
         # need it here to make compiler happy
@@ -568,12 +568,12 @@ module IPAddress
     # ip.last.to_s # => "192.168.100.254"
     # ```
     def last : IPv4
-      case
-      when @prefix <= 30
+      case @prefix
+      when .<= 30
         self.class.parse_u32 broadcast_u32 - 1, @prefix
-      when @prefix == 31
+      when .== 31
         self.class.parse_u32 broadcast_u32, @prefix
-      when @prefix == 32
+      when .== 32
         self
       else
         # need it here to make compiler happy
