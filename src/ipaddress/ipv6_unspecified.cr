@@ -43,7 +43,7 @@ module IPAddress
   # address appropriate for a pending connection. Routers must not forward
   # packets with the unspecified address.
   class IPv6::Unspecified < IPv6
-    protected def self.new(addr : String)
+    protected def self.new(addr : String, netmask = nil)
       super
     end
 
@@ -55,7 +55,7 @@ module IPAddress
     # ```
     def self.new
       address = ("0000:" * 8).rchop
-      new "#{address}/128"
+      new address, 128
     end
   end
 end

@@ -300,38 +300,41 @@ module IPAddress
     # ip = IPAddress::IPv4.new "10.0.0.1/8"
     # ip = IPAddress::IPv4.new "10.0.0.1/255.0.0.0"
     # ```
-    def initialize(addr : String)
-      if addr['/']?
+    def initialize(addr : String, netmask = nil)
+      if !netmask && addr['/']?
         ip, netmask = addr.split('/')
       else
         ip = addr
       end
 
-      unless self.class.valid? ip
+      unless self.class.valid?(ip)
         raise ArgumentError.new "Invalid IP: #{ip}"
       end
 
       @address = ip
       if netmask
-        if netmask =~ /^\d{1,2}$/
+        case
+        when netmask.is_a?(Prefix32)
+          @prefix = netmask
+        when netmask.is_a?(Int) || netmask.to_i?
           # netmask in CIDR format
-          @prefix = Prefix32.new netmask.to_i
-        elsif self.class.valid_netmask? netmask
+          @prefix = Prefix32.new(netmask.to_i)
+        when self.class.valid_netmask?(netmask)
           # netmask in IP format
-          @prefix = Prefix32.parse_netmask netmask
+          @prefix = Prefix32.parse_netmask(netmask)
         else
           # invalid netmask
           raise ArgumentError.new "Invalid netmask: #{netmask}"
         end
       else
         # netmask is `nil`, reverting to default classful mask
-        @prefix = Prefix32.new 32
+        @prefix = Prefix32.new(32)
       end
 
       # Array formed with the IP octets
       @octets = @address.split('.').map &.to_i
       # 32 bits interger containing the address
-      @u32 = IPAddress.aton address
+      @u32 = IPAddress.aton(address)
     end
 
     # Returns the octet specified by *index*.
@@ -363,7 +366,7 @@ module IPAddress
     # See also: `#octets`
     def []=(index : Int32, value : Int32) : Nil
       @octets[index] = value
-      initialize "#{@octets.join('.')}/#{@prefix}"
+      initialize(@octets.join('.'), @prefix)
     end
 
     # Appends a string with the address portion of the IPv4 object

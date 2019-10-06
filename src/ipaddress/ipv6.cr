@@ -234,23 +234,23 @@ module IPAddress
     # ip6 = IPAddress::IPv6.new "2001:db8::8:800:200c:417a/64"
     # ip6 = IPAddress.new "2001:db8::8:800:200c:417a/64"
     # ```
-    def initialize(addr : String)
-      if addr['/']?
+    def initialize(addr : String, netmask = nil)
+      if !netmask && addr['/']?
         ip, netmask = addr.split('/')
       else
-        ip, netmask = addr, 128
+        ip, netmask = addr, netmask || 128
       end
 
       if ip =~ /:.+\./
         raise ArgumentError.new "Please use #{self.class}::Mapped for IPv6 mapped addresses"
       end
 
-      unless self.class.valid? ip
+      unless self.class.valid?(ip)
         raise ArgumentError.new "Invalid IP: #{ip}"
       end
 
-      @prefix = Prefix128.new netmask.to_i
-      @groups = self.class.groups ip
+      @prefix = Prefix128.new(netmask.to_i)
+      @groups = self.class.groups(ip)
       @address = IN6FORMAT % @groups
       @compressed = compress_address
     end

@@ -37,7 +37,7 @@ module IPAddress
   #
   # The IPv6 loopback address corresponds to `127.0.0.1` in IPv4.
   class IPv6::Loopback < IPv6
-    protected def self.new(addr : String)
+    protected def self.new(addr : String, netmask = nil)
       super
     end
 
@@ -49,7 +49,7 @@ module IPAddress
     # ```
     def self.new
       address = ("0000:" * 7) + "0001"
-      new "#{address}/128"
+      new address, 128
     end
   end
 end

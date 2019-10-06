@@ -84,11 +84,11 @@ module IPAddress
     # ip6 = IPAddress::IPv6::Mapped.new "::0d01:4403"
     # ip6.to_string # => "::ffff:13.1.68.3"
     # ```
-    def initialize(addr : String)
-      if addr['/']?
+    def initialize(addr : String, netmask = nil)
+      if !netmask && addr['/']?
         string, netmask = addr.split('/')
       else
-        string, netmask = addr, 128
+        string, netmask = addr, netmask || 128
       end
 
       if string['.']?
@@ -100,7 +100,7 @@ module IPAddress
         @ipv4 = IPv4.parse_u32 (groups[-2] << 16) + groups[-1]
       end
 
-      super("::ffff:#{@ipv4.to_ipv6}/#{netmask}")
+      super("::ffff:#{@ipv4.to_ipv6}", netmask)
     end
 
     # Similar to `IPv6#to_s(io)`, but appends the IPv4 address
