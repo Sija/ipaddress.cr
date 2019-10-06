@@ -505,7 +505,7 @@ module IPAddress
     # ip.network? # => true
     # ```
     def network?
-      (@prefix < 32) && (@u32 | @prefix.to_u32 == @prefix.to_u32)
+      (@prefix < 32) && (to_u32 | @prefix.to_u32 == @prefix.to_u32)
     end
 
     # Returns a new `IPv4` object with the network number
@@ -731,7 +731,7 @@ module IPAddress
     # ip.network_u32 # => 167772160
     # ```
     def network_u32 : UInt32
-      @u32 & @prefix.to_u32
+      to_u32 & @prefix.to_u32
     end
 
     # Returns the broadcast address in unsigned 32 bits format.
@@ -855,7 +855,7 @@ module IPAddress
     # # => "172.16.100.100"]
     # ```
     def upto(limit : IPv4) : Array(IPv4)
-      Range.new(@u32, limit.to_u32).map &->IPv4.parse_u32(UInt32)
+      Range.new(to_u32, limit.to_u32).map &->IPv4.parse_u32(UInt32)
     end
 
     # ditto
