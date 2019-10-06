@@ -71,7 +71,7 @@ module IPAddress
     def self.parse_u32(u32, prefix = 32) : IPv4
       octets = [] of Int32
       4.times do
-        octets.unshift u32.to_i & 0xff
+        octets.unshift u32.to_i! & 0xff
         u32 >>= 8
       end
       address = octets.join '.'
@@ -679,6 +679,8 @@ module IPAddress
     # ```
     def succ : IPv4
       self.class.parse_u32(to_u32.succ, @prefix)
+    rescue OverflowError
+      self.class.new("0.0.0.0", @prefix)
     end
 
     # Returns the predecessor to the IP address.
@@ -689,6 +691,8 @@ module IPAddress
     # ```
     def pred : IPv4
       self.class.parse_u32(to_u32.pred, @prefix)
+    rescue OverflowError
+      self.class.new("255.255.255.255", @prefix)
     end
 
     # Returns the number of IP addresses included
