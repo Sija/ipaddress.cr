@@ -1,4 +1,4 @@
-# ipaddress.cr [![Build Status](https://travis-ci.org/Sija/ipaddress.cr.svg?branch=master)](https://travis-ci.org/Sija/ipaddress.cr)
+# ipaddress.cr [![CI](https://github.com/Sija/ipaddress.cr/actions/workflows/ci.yml/badge.svg)](https://github.com/Sija/ipaddress.cr/actions/workflows/ci.yml)
 
 IPAddress is a Crystal library designed to make the use of IPv4 and IPv6
 addresses simple, powerful and enjoyable. It provides a complete set of
