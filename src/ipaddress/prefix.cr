@@ -92,7 +92,7 @@ module IPAddress
     # prefix = IPAddress::Prefix32.new 24 # => 24
     # ```
     def initialize(prefix : Int32 = 32)
-      unless (0..32).includes? prefix
+      unless prefix.in?(0..32)
         raise ArgumentError.new "Prefix must be in range 0..32, got: #{prefix}"
       end
       super(prefix)
@@ -177,7 +177,7 @@ module IPAddress
     # prefix.hostmask # => "0.0.0.255"
     # ```
     def hostmask : String
-      octets.join '.' { |i| ~i.to_u8 }
+      octets.join('.') { |i| ~i.to_u8 }
     end
   end
 
@@ -188,7 +188,7 @@ module IPAddress
     # prefix = IPAddress::Prefix128.new 64 # => 64
     # ```
     def initialize(prefix : Int32 = 128)
-      unless (0..128).includes? prefix
+      unless prefix.in?(0..128)
         raise ArgumentError.new "Prefix must be in range 0..128, got: #{prefix}"
       end
       super(prefix)

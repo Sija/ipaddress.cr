@@ -417,7 +417,8 @@ module IPAddress
     # ip6.includes? addr2 # => false
     # ```
     def includes?(other : IPv6)
-      @prefix <= other.prefix && network_u128 == self.class.new(other.address + "/#{@prefix}").network_u128
+      @prefix <= other.prefix &&
+        network_u128 == self.class.new("#{other.address}/#{@prefix}").network_u128
     end
 
     # Checks whether a subnet includes all the given `IPv6` objects.
@@ -583,7 +584,7 @@ module IPAddress
     # ip6.bits # => "0010000000000001000011011011100000 [...]"
     # ```
     def bits : String
-      @groups.map { |i| "%016b" % i }.join
+      @groups.join { |i| "%016b" % i }
     end
 
     # Returns the address portion of an `IPv6` object

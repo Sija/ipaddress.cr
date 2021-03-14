@@ -436,7 +436,7 @@ module IPAddress
     # ip.to_hex # => "0a000000"
     # ```
     def to_hex : String
-      @octets.map { |i| "%02x" % i }.join
+      @octets.join { |i| "%02x" % i }
     end
 
     # Returns the address portion of an IP in binary format,
@@ -447,7 +447,7 @@ module IPAddress
     # ip.bits # => "01111111000000000000000000000001"
     # ```
     def bits : String
-      @octets.map { |i| "%08b" % i }.join
+      @octets.join { |i| "%08b" % i }
     end
 
     # Returns the address portion of an `IPv4` object
@@ -758,7 +758,8 @@ module IPAddress
     # ip.includes? addr2 # => false
     # ```
     def includes?(other : IPv4)
-      @prefix <= other.prefix && network_u32 == (other.to_u32 & @prefix.to_u32)
+      @prefix <= other.prefix &&
+        network_u32 == (other.to_u32 & @prefix.to_u32)
     end
 
     # Checks whether a subnet includes all the given `IPv4` objects.
