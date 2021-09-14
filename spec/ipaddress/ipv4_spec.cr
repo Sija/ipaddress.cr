@@ -28,6 +28,15 @@ describe IPAddress::IPv4 do
     "192.168.12.4/32"  => "255.255.255.255",
   }
 
+  wildcard_mask_values = {
+    "0.0.0.0/0"        => "255.255.255.255",
+    "10.0.0.0/8"       => "0.255.255.255",
+    "172.16.0.0/16"    => "0.0.255.255",
+    "192.168.0.0/24"   => "0.0.0.255",
+    "192.168.100.4/30" => "0.0.0.3",
+    "192.168.12.4/32"  => "0.0.0.0",
+  }
+
   decimal_values = {
     "0.0.0.0/0"        => 0,
     "10.0.0.0/8"       => 167772160,
@@ -752,7 +761,9 @@ describe IPAddress::IPv4 do
   end
 
   it "#wildcard_mask" do
-    ip = klass.new("172.16.100.4/22")
-    ip.wildcard_mask.should eq "0.0.3.255"
+    wildcard_mask_values.each do |address, wildcard|
+      ip = klass.new(address)
+      ip.wildcard_mask.should eq wildcard
+    end
   end
 end
