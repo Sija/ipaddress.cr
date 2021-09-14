@@ -750,4 +750,9 @@ describe IPAddress::IPv4 do
       ip.upto(range_to).size.should eq(range_size)
     end
   end
+
+  it "#wildcard_mask" do
+    ip = klass.new("172.16.100.4/22")
+    ip.wildcard_mask.should eq "0.0.3.255"
+  end
 end

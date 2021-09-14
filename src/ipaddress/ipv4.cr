@@ -414,6 +414,20 @@ module IPAddress
       @prefix = Prefix32.parse_netmask addr
     end
 
+    # Returns the wildcard mask as a String
+    #
+    # ```
+    # ip = IPAddress.new "172.16.100.4/22"
+    # ip.wildcard_mask # => "0.0.3.255"
+    # ```
+    def wildcard_mask : String
+      inverse = [] of Int32
+      netmask.split(".").each do |octet|
+        inverse << 255 - octet.to_i32
+      end
+      inverse.join(".")
+    end
+
     # Returns the address portion in unsigned
     # 32 bits integer format.
     #
