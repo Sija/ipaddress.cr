@@ -262,10 +262,10 @@ module IPAddress
     #
     # ```
     # ip = IPAddress.new "172.16.100.4"
-    # ip.to_string # => 172.16.100.4/16
+    # ip.to_string # => "172.16.100.4/16"
     #
     # ip.prefix = 22
-    # ip.to_string # => 172.16.100.4/22
+    # ip.to_string # => "172.16.100.4/22"
     # ```
     def prefix=(prefix : Int32) : Prefix32
       @prefix = Prefix32.new(prefix)
@@ -405,10 +405,10 @@ module IPAddress
     #
     # ```
     # ip = IPAddress.new "172.16.100.4"
-    # ip.to_string # => 172.16.100.4/16
+    # ip.to_string # => "172.16.100.4/16"
     #
     # ip.netmask = "255.255.252.0"
-    # ip.to_string # => 172.16.100.4/22
+    # ip.to_string # => "172.16.100.4/22"
     # ```
     def netmask=(addr : String) : Nil
       @prefix = Prefix32.parse_netmask addr
