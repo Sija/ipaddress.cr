@@ -168,18 +168,6 @@ module IPAddress
       octets[index]
     end
 
-    # The hostmask is the contrary of the subnet mask,
-    # as it shows the bits that can change within the
-    # hosts.
-    #
-    # ```
-    # prefix = IPAddress::Prefix32.new 24
-    # prefix.hostmask # => "0.0.0.255"
-    # ```
-    def hostmask : String
-      octets.join('.') { |i| ~i.to_u8 }
-    end
-
     # Returns the wildcard mask, i.e. a mask of bits that indicates
     # which parts of an IP address are available for examination.
     #
@@ -189,10 +177,10 @@ module IPAddress
     #
     # ```
     # prefix = IPAddress::Prefix32.new 24
-    # prefix.wildcard_mask # => "0.0.0.255"
+    # prefix.hostmask # => "0.0.0.255"
     # ```
-    def wildcard_mask : String
-      octets.join('.') { |i| 255 - i.to_u8 }
+    def hostmask : String
+      octets.join('.') { |i| ~i.to_u8 }
     end
   end
 

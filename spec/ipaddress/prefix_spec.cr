@@ -22,14 +22,14 @@ describe IPAddress::Prefix32 do
     24 => 4294967040,
     30 => 4294967292,
   }
-  wildcard_mask_hash = {
-     0 => "255.255.255.255",
-     8 => "0.255.255.255",
-    16 => "0.0.255.255",
-    22 => "0.0.3.255",
-    24 => "0.0.0.255",
-    30 => "0.0.0.3",
-    32 => "0.0.0.0",
+  hostmask_hash = {
+    "255.255.255.255" => 0,
+    "0.255.255.255"   => 8,
+    "0.0.255.255"     => 16,
+    "0.0.3.255"       => 22,
+    "0.0.0.255"       => 24,
+    "0.0.0.3"         => 30,
+    "0.0.0.0"         => 32,
   }
 
   klass = IPAddress::Prefix32
@@ -129,14 +129,9 @@ describe IPAddress::Prefix32 do
   end
 
   it "#hostmask" do
-    prefix = klass.new(8)
-    prefix.hostmask.should eq("0.255.255.255")
-  end
-
-  it "#wildcard_mask" do
-    wildcard_mask_hash.each do |prefix, mask|
+    hostmask_hash.each do |mask, prefix|
       prefix = klass.new(prefix)
-      prefix.wildcard_mask.should eq(mask)
+      prefix.hostmask.should eq(mask)
     end
   end
 end
