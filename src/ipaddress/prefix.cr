@@ -217,7 +217,7 @@ module IPAddress
     #       # => "1111111111111111111111111111111111111111111111111111111111111111"
     #            "0000000000000000000000000000000000000000000000000000000000000000"
     def bits : String
-      "1" * @prefix + "0" * (128 - @prefix)
+      "#{"1" * @prefix}#{"0" * (128 - @prefix)}"
     end
 
     # Returns unsigned 128 bits decimal number representing
