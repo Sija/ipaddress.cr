@@ -512,7 +512,7 @@ module IPAddress
     #
     # NOTE: If the host portion is very large, this method
     # can be very slow and possibly hang your system!
-    def each : Nil
+    def each(&) : Nil
       (network_u128..broadcast_u128).each do |i|
         yield self.class.parse_u128 i, @prefix
       end

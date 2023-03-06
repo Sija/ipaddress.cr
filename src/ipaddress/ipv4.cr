@@ -119,7 +119,7 @@ module IPAddress
         raise ArgumentError.new "Invalid IP: #{ip}"
       end
       first_octet_bits = "%08b" % ip.split('.').first.to_i
-      prefix = CLASSFUL.find(&.first.===(first_octet_bits)).not_nil!.last
+      prefix = CLASSFUL.find!(&.first.===(first_octet_bits)).last
       new "#{ip}/#{prefix}"
     end
 
@@ -600,7 +600,7 @@ module IPAddress
     # # => "10.0.0.5"
     # # => "10.0.0.6"
     # ```
-    def each_host : Nil
+    def each_host(&) : Nil
       (network_u32 + 1..broadcast_u32 - 1).each do |i|
         yield self.class.parse_u32 i, @prefix
       end
@@ -627,7 +627,7 @@ module IPAddress
     # # => "10.0.0.6"
     # # => "10.0.0.7"
     # ```
-    def each : Nil
+    def each(&) : Nil
       (network_u32..broadcast_u32).each do |i|
         yield self.class.parse_u32 i, @prefix
       end
