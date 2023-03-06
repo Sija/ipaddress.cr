@@ -22,6 +22,16 @@ describe IPAddress::Prefix32 do
     24 => 4294967040,
     30 => 4294967292,
   }
+  hostmask_hash = {
+    "255.255.255.255" => 0,
+    "0.255.255.255"   => 8,
+    "0.0.255.255"     => 16,
+    "0.0.3.255"       => 22,
+    "0.0.0.255"       => 24,
+    "0.0.0.3"         => 30,
+    "0.0.0.0"         => 32,
+  }
+
   klass = IPAddress::Prefix32
 
   it ".parse_netmask" do
@@ -119,8 +129,10 @@ describe IPAddress::Prefix32 do
   end
 
   it "#hostmask" do
-    prefix = klass.new(8)
-    prefix.hostmask.should eq("0.255.255.255")
+    hostmask_hash.each do |mask, prefix|
+      prefix = klass.new(prefix)
+      prefix.hostmask.should eq(mask)
+    end
   end
 end
 

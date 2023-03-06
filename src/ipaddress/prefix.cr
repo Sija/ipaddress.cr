@@ -168,9 +168,12 @@ module IPAddress
       octets[index]
     end
 
-    # The hostmask is the contrary of the subnet mask,
-    # as it shows the bits that can change within the
-    # hosts.
+    # Returns the wildcard mask, i.e. a mask of bits that indicates
+    # which parts of an IP address are available for examination.
+    #
+    # A wildcard mask can be thought of as an inverted subnet mask.
+    # For example, a subnet mask of `255.255.255.0` inverts to a
+    # wildcard mask of `0.0.0.255`.
     #
     # ```
     # prefix = IPAddress::Prefix32.new 24
@@ -199,10 +202,10 @@ module IPAddress
     #
     #     prefix = IPAddress::Prefix128.new 64
     #     prefix.bits
-    #       #=> "1111111111111111111111111111111111111111111111111111111111111111"
-    #           "0000000000000000000000000000000000000000000000000000000000000000"
+    #       # => "1111111111111111111111111111111111111111111111111111111111111111"
+    #            "0000000000000000000000000000000000000000000000000000000000000000"
     def bits : String
-      "1" * @prefix + "0" * (128 - @prefix)
+      "#{"1" * @prefix}#{"0" * (128 - @prefix)}"
     end
 
     # Returns unsigned 128 bits decimal number representing
