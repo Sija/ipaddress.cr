@@ -8,11 +8,11 @@ require "./ipaddress/*"
 module IPAddress
   # `IPAddress.new` is a wrapper method built around
   # IPAddress's library classes. Its purpose is to
-  # make you indipendent from the type of IP address
+  # make you independent from the type of IP address
   # you're going to use.
   #
   # For example, instead of creating the three types
-  # of IP addresses using their own contructors:
+  # of IP addresses using their own constructors:
   #
   # ```
   # ip = IPAddress::IPv4.new "172.16.10.1/24"

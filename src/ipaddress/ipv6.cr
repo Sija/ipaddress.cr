@@ -8,7 +8,7 @@ module IPAddress
   # IPv6 addresses are 128 bits long, in contrast with IPv4 addresses
   # which are only 32 bits long. An IPv6 address is generally written as
   # eight groups of four hexadecimal digits, each group representing 16
-  # bits or two octect. For example, the following is a valid IPv6
+  # bits or two octets. For example, the following is a valid IPv6
   # address:
   #
   #     2001:0db8:0000:0000:0008:0800:200c:417a
@@ -20,7 +20,7 @@ module IPAddress
   # ### Compression
   #
   # Since IPv6 addresses are very long to write, there are some
-  # semplifications and compressions that you can use to shorten them.
+  # simplifications and compressions that you can use to shorten them.
   #
   # * Leading zeroes: all the leading zeroes within a group can be
   #   omitted: "`0008`" would become "`8`"
