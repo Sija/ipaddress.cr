@@ -146,7 +146,7 @@ use `IPv4#to_string`:
 
 ```crystal
 ip.to_string
-  # => "172.16.10.l/24"
+  # => "172.16.10.1/24"
 ```
 
 #### Changing netmask
@@ -158,7 +158,7 @@ object. For example:
 ip.prefix = 25
 
 ip.to_string
-  # => "172.16.10.l/25"
+  # => "172.16.10.1/25"
 ```
 
 If you need to use a netmask in IPv4 format, you can achieve so by
