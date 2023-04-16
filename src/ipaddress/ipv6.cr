@@ -416,7 +416,8 @@ module IPAddress
     # ip6.includes? addr1 # => true
     # ip6.includes? addr2 # => false
     # ```
-    def includes?(other : IPv6)
+    def includes?(other)
+      return false unless other.is_a?(IPv6)
       @prefix <= other.prefix &&
         network_u128 == self.class.new("#{other.address}/#{@prefix}").network_u128
     end

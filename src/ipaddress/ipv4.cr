@@ -757,7 +757,8 @@ module IPAddress
     # ip.includes? addr1 # => true
     # ip.includes? addr2 # => false
     # ```
-    def includes?(other : IPv4)
+    def includes?(other)
+      return false unless other.is_a?(IPv4)
       @prefix <= other.prefix &&
         network_u32 == (other.to_u32 & @prefix.to_u32)
     end
