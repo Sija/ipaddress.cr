@@ -333,7 +333,7 @@ module IPAddress
 
       # Array formed with the IP octets
       @octets = @address.split('.').map &.to_i
-      # 32 bits interger containing the address
+      # 32 bits integer containing the address
       @u32 = IPAddress.aton(address)
     end
 

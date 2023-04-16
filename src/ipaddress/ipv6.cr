@@ -146,7 +146,7 @@ module IPAddress
       parse_u128 hex.to_big_i(16), prefix
     end
 
-    # Expands an IPv6 address in the canocical form.
+    # Expands an IPv6 address in the canonical form.
     #
     # ```
     # IPAddress::IPv6.expand "2001:0DB8:0:CD30::"
