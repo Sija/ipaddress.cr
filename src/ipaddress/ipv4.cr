@@ -22,7 +22,7 @@ module IPAddress
     }
 
     # Regular expression to match an IPv4 address
-    REGEXP = /(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/
+    REGEXP = /(0|[1-9]{1}\d{0,2})\.(0|[1-9]{1}\d{0,2})\.(0|[1-9]{1}\d{0,2})\.(0|[1-9]{1}\d{0,2})/
 
     # :nodoc:
     REGEXP_BONDED = /\A#{REGEXP}\Z/
