@@ -126,4 +126,14 @@ describe IPAddress do
       IPAddress.valid_ipv4_netmask?("0.0.0.1").should be_false
     end
   end
+
+  describe "#includes?" do
+    it "returns false when passing incompatible type" do
+      IPAddress.new("10.0.0.0/8")
+        .includes?(IPAddress.new("::1")).should be_false
+
+      IPAddress.new("::1")
+        .includes?(IPAddress.new("10.0.0.0/8")).should be_false
+    end
+  end
 end
