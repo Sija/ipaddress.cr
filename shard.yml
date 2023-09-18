@@ -7,8 +7,8 @@ authors:
 development_dependencies:
   ameba:
     github: crystal-ameba/ameba
-    version: ~> 1.4.0
+    version: ~> 1.5.0
 
-crystal: ~> 1.6
+crystal: ~> 1.9
 
 license: MIT
